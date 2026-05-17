@@ -4,6 +4,14 @@ export function getParam(param) {
   return urlParams.get(param);
 }
 
+export function isDiscounted(product) {
+  return product.FinalPrice < product.SuggestedRetailPrice;
+}
+
+export function getDiscountAmount(product) {
+  return product.SuggestedRetailPrice - product.FinalPrice;
+}
+
 export function getImageUrl(path) {
   if (!path) return "";
   if (path.startsWith("http://") || path.startsWith("https://")) return path;

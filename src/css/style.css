@@ -114,6 +114,10 @@ button {
   border-bottom: 2px solid var(--primary-color);
 }
 
+.hide {
+  display: none;
+}
+
 /* End utility classes */
 
 /* Cart icon styles */
@@ -191,6 +195,19 @@ button {
   font-size: 1em;
 }
 
+.product-discount {
+  color: var(--tertiary-color);
+  font-weight: bold;
+  font-size: var(--small-font);
+  margin: 0.25em 0;
+}
+
+.product-card__price--retail {
+  text-decoration: line-through;
+  color: var(--light-grey);
+  font-size: var(--small-font);
+}
+
 /* End product list card */
 
 .product-detail {
@@ -201,6 +218,10 @@ button {
 
 .product-detail img {
   width: 100%;
+}
+
+.product-detail .product-discount {
+  font-size: var(--font-base);
 }
 
 /* Start cart list card styles */
@@ -239,6 +260,18 @@ button {
 .cart-card__price {
   grid-row: 2;
   grid-column: 3;
+}
+
+.cart-footer {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-top: 2px solid var(--primary-color);
+  text-align: right;
+}
+
+.cart-total {
+  font-size: var(--large-font);
+  font-weight: bold;
 }
 
 @media screen and (min-width: 500px) {
