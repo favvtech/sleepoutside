@@ -1,7 +1,9 @@
 import { setLocalStorage, getLocalStorage } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
+import { getParam } from "./utils.mjs";
 
 const dataSource = new ProductData("tents");
+const productId = getParam('product');
 
 function addProductToCart(product) {
   // Get existing cart, always default to empty array if nothing there
@@ -27,3 +29,5 @@ async function addToCartHandler(e) {
 document
   .getElementById("addToCart")
   .addEventListener("click", addToCartHandler);
+
+console.log(dataSource.findProductById(productId));
