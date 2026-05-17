@@ -44,15 +44,21 @@ export default class ProductDetails {
     img.src = getImageUrl(product.Image);
     img.alt = product.NameWithoutBrand;
 
-    document.querySelector(".product-card__price").textContent =
-      `$${product.FinalPrice.toFixed(2)}`;
-
+    const retailEl = document.querySelector(".product-card__price--retail");
+    const priceEl = document.querySelector(".product-card__price");
     const discountEl = document.querySelector(".product-discount");
+
+    priceEl.textContent = `$${product.FinalPrice.toFixed(2)}`;
+
     if (isDiscounted(product)) {
       const savings = getDiscountAmount(product);
-      discountEl.textContent = `Save $${savings.toFixed(2)} (Retail: $${product.SuggestedRetailPrice.toFixed(2)})`;
+      retailEl.textContent = `$${product.SuggestedRetailPrice.toFixed(2)}`;
+      retailEl.classList.remove("hide");
+      discountEl.textContent = `Save $${savings.toFixed(2)}`;
       discountEl.classList.remove("hide");
     } else {
+      retailEl.textContent = "";
+      retailEl.classList.add("hide");
       discountEl.textContent = "";
       discountEl.classList.add("hide");
     }
