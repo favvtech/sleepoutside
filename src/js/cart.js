@@ -2,11 +2,19 @@ import { getImageUrl, getLocalStorage } from "./utils.mjs";
 
 function getCartItems() {
   const storedCart = getLocalStorage("so-cart");
-  return Array.isArray(storedCart)
-    ? storedCart
-    : storedCart
-      ? [storedCart]
-      : [];
+  if (!storedCart) {
+    return [];
+  }
+
+  const items = Array.isArray(storedCart) ? storedCart : [storedCart];
+  return items.filter(
+    (item) =>
+      item &&
+      typeof item === "object" &&
+      item.Id &&
+      Array.isArray(item.Colors) &&
+      item.Colors.length > 0,
+  );
 }
 
 function getItemPrice(item) {
@@ -16,6 +24,10 @@ function getItemPrice(item) {
 function renderCartContents() {
   const cartItems = getCartItems();
   const listEl = document.querySelector(".product-list");
+
+  if (!listEl) {
+    return;
+  }
 
   if (cartItems.length === 0) {
     listEl.innerHTML = "";
@@ -46,17 +58,19 @@ function renderCartTotal(cartItems) {
 }
 
 function cartItemTemplate(item) {
+  const colorName = item.Colors[0]?.ColorName ?? "";
+
   return `<li class="cart-card divider">
   <a href="/product_pages/?product=${item.Id}" class="cart-card__image">
     <img
       src="${getImageUrl(item.Image)}"
-      alt="${item.Name}"
+      alt="${item.Name ?? "Cart item"}"
     />
   </a>
   <a href="/product_pages/?product=${item.Id}">
-    <h2 class="card__name">${item.Name}</h2>
+    <h2 class="card__name">${item.Name ?? ""}</h2>
   </a>
-  <p class="cart-card__color">${item.Colors[0].ColorName}</p>
+  <p class="cart-card__color">${colorName}</p>
   <p class="cart-card__quantity">qty: 1</p>
   <p class="cart-card__price">$${getItemPrice(item).toFixed(2)}</p>
 </li>`;
