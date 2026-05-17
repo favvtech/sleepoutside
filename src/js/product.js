@@ -6,6 +6,9 @@ const dataSource = new ProductData("tents");
 const productId = getParam('product');
 
 function addProductToCart(product) {
+  // Get existing cart, always default to empty array if nothing there
+  const cart = getLocalStorage("so-cart") || [];
+
   const storedCart = getLocalStorage("so-cart");
   const cart = Array.isArray(storedCart)
     ? storedCart
@@ -15,6 +18,7 @@ function addProductToCart(product) {
   cart.push(product);
   setLocalStorage("so-cart", cart);
 }
+
 // add to cart button event handler
 async function addToCartHandler(e) {
   const product = await dataSource.findProductById(e.target.dataset.id);
