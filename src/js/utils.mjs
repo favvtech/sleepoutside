@@ -4,6 +4,18 @@ export function getParam(param) {
   return urlParams.get(param);
 }
 
+/** Root-relative image paths work from any page in dev and production. */
+export function getImageUrl(path) {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  const normalized = path.replace(/^(\.\.\/)+/, "").replace(/^\//, "");
+  return `/${normalized}`;
+}
+
+export function clearLocalStorage(key) {
+  localStorage.removeItem(key);
+}
+
 // wrapper for querySelector...returns matching element
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
