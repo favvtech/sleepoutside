@@ -1,4 +1,10 @@
-import { getImageUrl, getLocalStorage, setLocalStorage } from "./utils.mjs";
+import {
+  getDiscountAmount,
+  getImageUrl,
+  getLocalStorage,
+  isDiscounted,
+  setLocalStorage,
+} from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -40,6 +46,17 @@ export default class ProductDetails {
 
     document.querySelector(".product-card__price").textContent =
       `$${product.FinalPrice.toFixed(2)}`;
+
+    const discountEl = document.querySelector(".product-discount");
+    if (isDiscounted(product)) {
+      const savings = getDiscountAmount(product);
+      discountEl.textContent = `Save $${savings.toFixed(2)} (Retail: $${product.SuggestedRetailPrice.toFixed(2)})`;
+      discountEl.classList.remove("hide");
+    } else {
+      discountEl.textContent = "";
+      discountEl.classList.add("hide");
+    }
+
     document.querySelector(".product__color").textContent =
       product.Colors[0].ColorName;
     document.querySelector(".product__description").innerHTML =

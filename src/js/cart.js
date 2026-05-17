@@ -1,14 +1,34 @@
 import { getImageUrl, getLocalStorage } from "./utils.mjs";
 
-function renderCartContents() {
+function getCartItems() {
   const storedCart = getLocalStorage("so-cart");
-  const cartItems = Array.isArray(storedCart)
+  return Array.isArray(storedCart)
     ? storedCart
     : storedCart
       ? [storedCart]
       : [];
+}
+
+function renderCartContents() {
+  const cartItems = getCartItems();
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
+  renderCartTotal(cartItems);
+}
+
+function renderCartTotal(cartItems) {
+  const footer = document.querySelector(".cart-footer");
+  const totalEl = document.querySelector(".cart-total");
+
+  if (cartItems.length === 0) {
+    footer.classList.add("hide");
+    totalEl.textContent = "Total: ";
+    return;
+  }
+
+  const total = cartItems.reduce((sum, item) => sum + item.FinalPrice, 0);
+  footer.classList.remove("hide");
+  totalEl.textContent = `Total: $${total.toFixed(2)}`;
 }
 
 function cartItemTemplate(item) {
