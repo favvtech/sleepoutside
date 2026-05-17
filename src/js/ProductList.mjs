@@ -1,15 +1,6 @@
-import {
-  getDiscountAmount,
-  getImageUrl,
-  isDiscounted,
-  renderListWithTemplate,
-} from "./utils.mjs";
+import { getImageUrl, getListingPriceHtml, renderListWithTemplate } from "./utils.mjs";
 
 function productCardTemplate(product) {
-  const discountHtml = isDiscounted(product)
-    ? `<p class="product-discount">Save $${getDiscountAmount(product).toFixed(2)}</p>`
-    : "";
-
   return `<li class="product-card">
   <a href="product_pages/?product=${product.Id}">
     <img
@@ -18,8 +9,7 @@ function productCardTemplate(product) {
     />
     <h3 class="card__brand">${product.Brand.Name}</h3>
     <h2 class="card__name">${product.NameWithoutBrand}</h2>
-    <p class="product-card__price">$${product.FinalPrice.toFixed(2)}</p>
-    ${discountHtml}
+    ${getListingPriceHtml(product)}
   </a>
 </li>`;
 }

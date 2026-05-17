@@ -12,6 +12,16 @@ export function getDiscountAmount(product) {
   return product.SuggestedRetailPrice - product.FinalPrice;
 }
 
+export function getListingPriceHtml(product) {
+  if (isDiscounted(product)) {
+    return `<div class="product-pricing">
+      <p class="product-card__price--retail">$${product.SuggestedRetailPrice.toFixed(2)}</p>
+      <p class="product-card__price">$${product.FinalPrice.toFixed(2)}</p>
+    </div>`;
+  }
+  return `<p class="product-card__price">$${product.FinalPrice.toFixed(2)}</p>`;
+}
+
 export function getImageUrl(path) {
   if (!path) return "";
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
