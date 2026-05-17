@@ -9,25 +9,17 @@ function convertToJson(res) {
 export default class ProductData {
   constructor(category) {
     this.category = category;
-    this.path = `/json/${this.category}.json`;
+    this.path = `../json/${this.category}.json`;
   }
 
-  // Fetch all products
-  async getData() {
-    const response = await fetch(this.path);
-    return convertToJson(response);
+  getData() {
+    return fetch(this.path)
+      .then(convertToJson)
+      .then((data) => data);
   }
 
-  // Find a single product by Id
   async findProductById(id) {
     const products = await this.getData();
-    return products.find((item) => item.Id.toLowerCase() === id.toLowerCase());
-  }
-
-  // Return a filtered list (e.g., top products)
-  async getProductsByCount(count = 4) {
-    const products = await this.getData();
-    return products.slice(0, count);
+    return products.find((item) => item.Id === id);
   }
 }
-
