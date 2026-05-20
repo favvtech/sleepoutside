@@ -5,7 +5,6 @@ const dataSource = new ProductData("tents");
 
 function addProductToCart(product) {
   // Get existing cart, always default to empty array if nothing there
-  const cart = getLocalStorage("so-cart") || [];
 
   const storedCart = getLocalStorage("so-cart");
   const cart = Array.isArray(storedCart)
