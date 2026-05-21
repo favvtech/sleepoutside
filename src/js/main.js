@@ -1,6 +1,7 @@
-import Alert from "./alert.mjs";
+import Alert from "./Alert.js";
 import ProductData from "./ProductData.mjs";
-import ProductList from "./productList.mjs";
+import ProductList from "./ProductList.mjs";
+import { LoadHeaderFooter } from "./utils.mjs";
 
 const dataSource = new ProductData("tents");
 const element = document.querySelector(".product-list");
@@ -9,3 +10,4 @@ const alerts = new Alert();
 
 alerts.init();
 listing.init();
+LoadHeaderFooter();

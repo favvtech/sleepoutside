@@ -1,6 +1,6 @@
 import { getImageUrl, getLocalStorage, setLocalStorage } from "./utils.mjs";
 
-export function getCartItems() {
+function getCartItems() {
   const storedCart = getLocalStorage("so-cart");
   if (!storedCart) {
     return [];
@@ -16,11 +16,11 @@ export function getCartItems() {
   );
 }
 
-export function getItemPrice(item) {
+function getItemPrice(item) {
   return Number(item.FinalPrice) || 0;
 }
 
-export function removeFromCart(event) {
+function removeFromCart(event) {
     const productId = event.target.dataset.id;
     const cart = getCartItems();
     const indexToRemove = cart.findIndex((item) => item.Id === productId);
@@ -31,7 +31,7 @@ export function removeFromCart(event) {
     renderCartContents();
 }
 
-export function renderCartContents() {
+function renderCartContents() {
   const cartItems = getCartItems();
   const listEl = document.querySelector(".product-list");
   if (!listEl) {
@@ -63,7 +63,7 @@ function renderCartTotal(cartItems) {
   footer.classList.remove("hide");
   totalEl.textContent = `Total: $${total.toFixed(2)}`;
 }
- 
+
 function cartItemTemplate(item) {
   const colorName = item.Colors[0]?.ColorName ?? "";
   return `<li class="cart-card divider">

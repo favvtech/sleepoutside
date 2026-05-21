@@ -12,22 +12,24 @@ export default class ProductData {
     this.path = `/json/${this.category}.json`;
   }
 
-  // Fetch all products
-  async getData() {
-    const response = await fetch(this.path);
-    return convertToJson(response);
+  getData() {
+    return fetch(this.path)
+      .then(convertToJson)
+      .then((data) => data);
   }
 
-  // Find a single product by Id
   async findProductById(id) {
     const products = await this.getData();
-    return products.find((item) => item.Id.toLowerCase() === id.toLowerCase());
+    return products.find((item) => item.Id === id);
   }
 
-  // Return a filtered list (e.g., top products)
   async getProductsByCount(count = 4) {
     const products = await this.getData();
-    return products.slice(0, count);
+    const featuredIds = ["880RR", "985RF", "985PR", "344YJ"];
+    return featuredIds
+      .map((id) => products.find((item) => item.Id === id))
+      .filter(Boolean)
+      .slice(0, count);
   }
 }
 
