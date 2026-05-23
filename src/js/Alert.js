@@ -34,8 +34,7 @@ export default class Alert {
       }
       const data = await response.json();
       return Array.isArray(data) ? data : [];
-    } catch (error) {
-      console.warn("Unable to load alerts:", error);
+    } catch {
       return [];
     }
   }
