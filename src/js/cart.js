@@ -1,4 +1,9 @@
-import { getImageUrl, getLocalStorage, setLocalStorage } from "./utils.mjs";
+import {
+  getImageUrl,
+  getLocalStorage,
+  LoadHeaderFooter,
+  setLocalStorage,
+} from "./utils.mjs";
 
 function getCartItems() {
   const storedCart = getLocalStorage("so-cart");
@@ -20,15 +25,34 @@ function getItemPrice(item) {
   return Number(item.FinalPrice) || 0;
 }
 
-function removeFromCart(event) {
-    const productId = event.target.dataset.id;
-    const cart = getCartItems();
-    const indexToRemove = cart.findIndex((item) => item.Id === productId);
-    if (indexToRemove !== -1) {
-        cart.splice(indexToRemove, 1);
+function removeFromCart(indexToRemove) {
+  const cart = getCartItems();
+  if (indexToRemove < 0 || indexToRemove >= cart.length) {
+    return;
+  }
+
+  cart.splice(indexToRemove, 1);
+  setLocalStorage("so-cart", cart);
+  renderCartContents();
+}
+
+function setupCartActions() {
+  const listEl = document.querySelector(".product-list");
+  if (!listEl) {
+    return;
+  }
+
+  listEl.addEventListener("click", (event) => {
+    const removeButton = event.target.closest(".cart-card__remove");
+    if (!removeButton) {
+      return;
     }
-    setLocalStorage("so-cart", cart);
-    renderCartContents();
+
+    const indexToRemove = Number(removeButton.dataset.index);
+    if (Number.isInteger(indexToRemove)) {
+      removeFromCart(indexToRemove);
+    }
+  });
 }
 
 function renderCartContents() {
@@ -40,11 +64,10 @@ function renderCartContents() {
   if (cartItems.length === 0) {
     listEl.innerHTML = "";
   } else {
-    listEl.innerHTML = cartItems.map((item) => cartItemTemplate(item)).join("");
+    listEl.innerHTML = cartItems
+      .map((item, index) => cartItemTemplate(item, index))
+      .join("");
   }
-  document.querySelectorAll(".cart-card__remove").forEach((button) => {
-      button.addEventListener("click", removeFromCart);
-  });
   renderCartTotal(cartItems);
 }
 
@@ -64,7 +87,7 @@ function renderCartTotal(cartItems) {
   totalEl.textContent = `Total: $${total.toFixed(2)}`;
 }
 
-function cartItemTemplate(item) {
+function cartItemTemplate(item, index) {
   const colorName = item.Colors[0]?.ColorName ?? "";
   return `<li class="cart-card divider">
   <a href="/product_pages/?product=${item.Id}" class="cart-card__image">
@@ -79,8 +102,10 @@ function cartItemTemplate(item) {
   <p class="cart-card__color">${colorName}</p>
   <p class="cart-card__quantity">qty: 1</p>
   <p class="cart-card__price">$${getItemPrice(item).toFixed(2)}</p>
-  <button class="cart-card__remove" data-id="${item.Id}">X</button>
+  <button class="cart-card__remove" type="button" data-index="${index}" aria-label="Remove ${item.Name ?? "item"} from cart">Remove</button>
 </li>`;
 }
 
+setupCartActions();
 renderCartContents();
+LoadHeaderFooter();
