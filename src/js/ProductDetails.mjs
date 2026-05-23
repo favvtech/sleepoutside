@@ -41,7 +41,7 @@ export default class ProductDetails {
       product.NameWithoutBrand;
 
     const img = document.querySelector(".product-detail img");
-    img.src = getImageUrl(product.Image);
+    img.src = getImageUrl(product.Images.PrimaryLarge);
     img.alt = product.NameWithoutBrand;
 
     const retailEl = document.querySelector(".product-card__price--retail");
