@@ -3,6 +3,7 @@ import {
   getLocalStorage,
   LoadHeaderFooter,
   setLocalStorage,
+  updateCartCount,
 } from "./utils.mjs";
 
 function getCartItems() {
@@ -25,6 +26,10 @@ function getItemPrice(item) {
   return Number(item.FinalPrice) || 0;
 }
 
+function getItemQuantity(item) {
+  return Number(item.Quantity) || 1;
+}
+
 function removeFromCart(indexToRemove) {
   const cart = getCartItems();
   if (indexToRemove < 0 || indexToRemove >= cart.length) {
@@ -34,6 +39,19 @@ function removeFromCart(indexToRemove) {
   cart.splice(indexToRemove, 1);
   setLocalStorage("so-cart", cart);
   renderCartContents();
+  updateCartCount();
+}
+
+function updateCartItemQuantity(indexToUpdate, quantity) {
+  const cart = getCartItems();
+  if (indexToUpdate < 0 || indexToUpdate >= cart.length) {
+    return;
+  }
+
+  cart[indexToUpdate].Quantity = quantity;
+  setLocalStorage("so-cart", cart);
+  renderCartContents();
+  updateCartCount();
 }
 
 function setupCartActions() {
@@ -51,6 +69,19 @@ function setupCartActions() {
     const indexToRemove = Number(removeButton.dataset.index);
     if (Number.isInteger(indexToRemove)) {
       removeFromCart(indexToRemove);
+    }
+  });
+
+  listEl.addEventListener("change", (event) => {
+    const quantityInput = event.target.closest(".cart-card__quantity-input");
+    if (!quantityInput) {
+      return;
+    }
+
+    const indexToUpdate = Number(quantityInput.dataset.index);
+    const quantity = Number(quantityInput.value);
+    if (Number.isInteger(indexToUpdate) && quantity > 0) {
+      updateCartItemQuantity(indexToUpdate, quantity);
     }
   });
 }
@@ -82,7 +113,10 @@ function renderCartTotal(cartItems) {
     totalEl.textContent = "Total: ";
     return;
   }
-  const total = cartItems.reduce((sum, item) => sum + getItemPrice(item), 0);
+  const total = cartItems.reduce(
+    (sum, item) => sum + getItemPrice(item) * getItemQuantity(item),
+    0,
+  );
   footer.classList.remove("hide");
   totalEl.textContent = `Total: $${total.toFixed(2)}`;
 }
@@ -102,7 +136,10 @@ function cartItemTemplate(item, index) {
     <h2 class="card__name">${item.Name ?? ""}</h2>
   </a>
   <p class="cart-card__color">${colorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
+  <label class="cart-card__quantity">
+    qty:
+    <input class="cart-card__quantity-input" type="number" min="1" value="${getItemQuantity(item)}" data-index="${index}" />
+  </label>
   <p class="cart-card__price">$${getItemPrice(item).toFixed(2)}</p>
   <button class="cart-card__remove" type="button" data-index="${index}" aria-label="Remove ${item.Name ?? "item"} from cart">Remove</button>
 </li>`;

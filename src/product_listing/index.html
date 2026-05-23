@@ -11,10 +11,19 @@
   <body>
     <header class="divider" id="header">
     </header>
+    <nav class="breadcrumbs" aria-label="Breadcrumb"></nav>
 
     <main class="divider">
       <section class="products">
         <h2 class="product-listing__title">Products</h2>
+        <div class="product-listing__controls">
+          <label for="product-sort">Sort by:</label>
+          <select id="product-sort" class="product-sort">
+            <option value="">Default</option>
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+          </select>
+        </div>
         <ul class="product-list"></ul>
       </section>
     </main>

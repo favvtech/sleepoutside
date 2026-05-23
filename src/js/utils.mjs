@@ -54,6 +54,31 @@ export function clearLocalStorage(key) {
   localStorage.removeItem(key);
 }
 
+export function getCartCount() {
+  const storedCart = getLocalStorage("so-cart");
+  const cartItems = Array.isArray(storedCart)
+    ? storedCart
+    : storedCart
+      ? [storedCart]
+      : [];
+
+  return cartItems.reduce(
+    (total, item) => total + (Number(item.Quantity) || 1),
+    0,
+  );
+}
+
+export function updateCartCount() {
+  const cartCount = document.querySelector(".cart-count");
+  if (!cartCount) {
+    return;
+  }
+
+  const count = getCartCount();
+  cartCount.textContent = count;
+  cartCount.classList.toggle("hide", count === 0);
+}
+
 export function setClick(selector, callback) {
   qs(selector).addEventListener("touchend", (event) => {
     event.preventDefault();
@@ -106,6 +131,7 @@ export async function LoadHeaderFooter() {
   const headerTemplate = await loadTemplate("../partials/header.html");
   const headerElement = document.querySelector("#header");
   renderWithTemplate(headerTemplate, headerElement);
+  updateCartCount();
 
   const footerTemplate = await loadTemplate("../partials/footer.html");
   const footerElement = document.querySelector("#footer");

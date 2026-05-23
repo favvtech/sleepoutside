@@ -32,6 +32,9 @@ img {
 
 header {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
 }
@@ -131,11 +134,52 @@ button {
   width: 25px;
 }
 
+.cart a {
+  display: inline-block;
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -0.8em;
+  right: -0.8em;
+  min-width: 1.4em;
+  padding: 0.15em 0.35em;
+  border-radius: 999px;
+  background-color: var(--tertiary-color);
+  color: white;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
 .cart:hover svg {
   fill: gray;
 }
 
 /* End cart icon styles */
+
+.site-search {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.site-search input {
+  max-width: 180px;
+  padding: 0.45rem;
+  border: 1px solid var(--light-grey);
+}
+
+.site-search button {
+  margin: 0;
+  padding: 0.45rem 0.75rem;
+  font-size: var(--small-font);
+}
+
+.breadcrumbs {
+  padding: 0.75rem 1rem;
+  font-weight: bold;
+}
 
 .mission {
   position: absolute;
@@ -200,6 +244,18 @@ button {
 .product-list a {
   text-decoration: none;
   color: var(--dark-grey);
+}
+
+.product-listing__controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.product-sort {
+  padding: 0.4rem;
 }
 
 /* Styles for product lists */
@@ -282,6 +338,16 @@ button {
   font-size: var(--font-base);
 }
 
+.product-discount-flag {
+  display: inline-block;
+  width: fit-content;
+  padding: 0.35em 0.6em;
+  border-radius: 4px;
+  background-color: var(--tertiary-color);
+  color: white;
+  font-weight: bold;
+}
+
 /* Start cart list card styles */
 .cart-card {
   display: grid;
@@ -314,6 +380,11 @@ button {
 .cart-card__quantity {
   grid-row: 1;
   grid-column: 3;
+}
+
+.cart-card__quantity-input {
+  width: 4rem;
+  padding: 0.25rem;
 }
 
 .cart-card__price {
