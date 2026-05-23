@@ -89,10 +89,12 @@ function renderCartTotal(cartItems) {
 
 function cartItemTemplate(item, index) {
   const colorName = item.Colors[0]?.ColorName ?? "";
+  const image = item.Image || item.Images?.PrimaryMedium;
+
   return `<li class="cart-card divider">
   <a href="/product_pages/?product=${item.Id}" class="cart-card__image">
     <img
-      src="${getImageUrl(item.Image)}"
+      src="${getImageUrl(image)}"
       alt="${item.Name ?? "Cart item"}"
     />
   </a>
