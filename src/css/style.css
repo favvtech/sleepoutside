@@ -387,6 +387,12 @@ button {
   padding: 0.25rem;
 }
 
+/* Always show number input spinner arrows */
+.cart-card__quantity-input::-webkit-inner-spin-button,
+.cart-card__quantity-input::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
 .cart-card__price {
   grid-row: 2;
   grid-column: 3;
