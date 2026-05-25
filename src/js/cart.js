@@ -4,6 +4,7 @@ import {
   LoadHeaderFooter,
   setLocalStorage,
   updateCartCount,
+  animateCartIcon, // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 } from "./utils.mjs";
 
 function getCartItems() {
@@ -40,6 +41,7 @@ function removeFromCart(indexToRemove) {
   setLocalStorage("so-cart", cart);
   renderCartContents();
   updateCartCount();
+  animateCartIcon(); // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 }
 
 function updateCartItemQuantity(indexToUpdate, quantity) {
@@ -52,6 +54,7 @@ function updateCartItemQuantity(indexToUpdate, quantity) {
   setLocalStorage("so-cart", cart);
   renderCartContents();
   updateCartCount();
+  animateCartIcon(); // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 }
 
 function setupCartActions() {
