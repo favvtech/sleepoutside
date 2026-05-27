@@ -5,6 +5,7 @@ import {
   isDiscounted,
   setLocalStorage,
   updateCartCount,
+  animateCartIcon, // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 } from "./utils.mjs";
 
 export default class ProductDetails {
@@ -40,6 +41,7 @@ export default class ProductDetails {
 
     setLocalStorage("so-cart", cart);
     updateCartCount();
+    animateCartIcon(); // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
   }
 
   renderProductDetails() {

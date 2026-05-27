@@ -387,6 +387,12 @@ button {
   padding: 0.25rem;
 }
 
+/* Always show number input spinner arrows */
+.cart-card__quantity-input::-webkit-inner-spin-button,
+.cart-card__quantity-input::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
 .cart-card__price {
   grid-row: 2;
   grid-column: 3;
@@ -448,4 +454,28 @@ button {
 footer {
   font-size: var(--small-font);
   padding: 1em;
+}
+
+/* Backlog 3 - Animate cart (backpack) icon when item added to cart */
+/* Added by Cliff Cummings */
+@keyframes cart-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  30% {
+    transform: scale(2);
+  }
+
+  60% {
+    transform: scale(2.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cart-animate svg {
+  animation: cart-pulse 0.4s ease-in-out;
 }

@@ -137,3 +137,15 @@ export async function LoadHeaderFooter() {
   const footerElement = document.querySelector("#footer");
   renderWithTemplate(footerTemplate, footerElement);
 }
+
+/* Backlog 3 - Animate cart (backpack) icon when item added to cart */
+/* Added by Cliff Cummings */
+export function animateCartIcon() {
+  const cart = document.querySelector(".cart");
+  if (!cart) return;
+  cart.classList.remove("cart-animate");
+  cart.classList.add("cart-animate");
+  cart.addEventListener("animationend", () => {
+    cart.classList.remove("cart-animate");
+  }, { once: true });
+}
