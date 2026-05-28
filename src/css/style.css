@@ -246,6 +246,13 @@ button {
   color: var(--dark-grey);
 }
 
+/* Cart page product list override */
+.cart .product-list,
+.products .product-list {
+  display: block;
+  width: 100%;
+}
+
 .product-listing__controls {
   display: flex;
   gap: 0.5rem;
@@ -351,7 +358,8 @@ button {
 /* Start cart list card styles */
 .cart-card {
   display: grid;
-  grid-template-columns: 25% auto 15% auto;
+  /* grid-template-columns: 25% auto 15% auto; */
+  grid-template-columns: 25% 1fr 120px 100px;
   font-size: var(--small-font);
   /* max-height: 120px; */
   align-items: center;
@@ -370,6 +378,15 @@ button {
 .cart-card .card__name {
   grid-row: 1;
   grid-column: 2;
+  /* Added by Cliff Cummings */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-decoration: none;
+  color: var(--dark-grey);
+  font-size: 1em;
+  font-weight: bold;
 }
 
 .cart-card__color {
@@ -447,7 +464,8 @@ button {
 
   .cart-card {
     font-size: inherit;
-    grid-template-columns: 150px auto 15% auto;
+    /* grid-template-columns: 150px auto 15% auto; */
+    grid-template-columns: 150px 1fr 120px 100px;
   }
 }
 
