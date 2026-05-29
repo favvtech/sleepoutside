@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readdir } from "node:fs/promises";
+import { copyFile, mkdir, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const jsDir = join(process.cwd(), "dist", "js");
@@ -7,6 +7,16 @@ const homeEntry = files.find((file) => /^main\d*\.js$/.test(file));
 
 if (homeEntry && homeEntry !== "main.js") {
   await copyFile(join(jsDir, homeEntry), join(jsDir, "main.js"));
+}
+
+async function copyIfExists(from, to) {
+  try {
+    await copyFile(join(process.cwd(), from), join(process.cwd(), to));
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      throw error;
+    }
+  }
 }
 
 const assetsDir = join(process.cwd(), "dist", "assets");
@@ -22,7 +32,6 @@ const compatibilityAssets = [
   ["dist/js/main2.js", "dist/assets/main--EOQpHS9.js"],
   ["dist/js/main2.js", "dist/assets/main-4iW2Os6y.js"],
   ["dist/js/main2.js", "dist/assets/main-BavQrC0a.js"],
-  ["dist/js/ProductData.js", "dist/assets/ProductData-BzbZu8QD.js"],
   ["dist/js/product-listing.js", "dist/assets/productListing-VkPN6sO3.js"],
   ["dist/js/product-listing.js", "dist/assets/productListing-CB4deUsJ.js"],
   ["dist/js/product-listing.js", "dist/assets/productListing-DT9occWR.js"],
@@ -35,7 +44,15 @@ const compatibilityAssets = [
 ];
 
 await Promise.all(
-  compatibilityAssets.map(([from, to]) =>
-    copyFile(join(process.cwd(), from), join(process.cwd(), to)),
-  ),
+  compatibilityAssets.map(([from, to]) => copyIfExists(from, to)),
+);
+
+await writeFile(
+  join(process.cwd(), "dist", "js", "ProductData.js"),
+  'export { E as P } from "./ExternalServices.js";\n',
+);
+
+await writeFile(
+  join(process.cwd(), "dist", "assets", "ProductData-BzbZu8QD.js"),
+  'export { E as P } from "../js/ExternalServices.js";\n',
 );

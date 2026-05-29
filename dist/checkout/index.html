@@ -9,8 +9,9 @@
     <title>Sleep Outside | Checkout</title>
 
 
-    <script type="module" crossorigin src="/js/utils.js"></script>
-    <script type="module" crossorigin src="/js/main2.js"></script>
+    <script type="module" crossorigin src="/js/checkout.js"></script>
+    <link rel="modulepreload" crossorigin href="/js/utils.js">
+    <link rel="modulepreload" crossorigin href="/js/ExternalServices.js">
     <link rel="stylesheet" crossorigin href="/css/style.css">
   </head>
 
@@ -23,7 +24,7 @@
         <h2>Review & Place your Order</h2>
       </section>
 
-      <form class="checkout-form">
+      <form class="checkout-form" name="checkout">
         <fieldset>
           <legend>Customer Name</legend>
       
@@ -62,6 +63,14 @@
           <label for="securityCode">Security Code</label>
           <input type="text" id="securityCode" name="securityCode" required />
         </fieldset>
+
+        <section class="order-summary">
+          <h3>Order Summary</h3>
+          <p>Subtotal: <span id="subtotal">$0.00</span></p>
+          <p>Tax: <span id="tax">$0.00</span></p>
+          <p>Shipping Estimate: <span id="shipping">$0.00</span></p>
+          <p>Order Total: <span id="orderTotal">$0.00</span></p>
+        </section>
       
         <button type="submit">Checkout</button>
       </form>

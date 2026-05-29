@@ -1,1 +1,1 @@
-const o="https://wdd330-backend.onrender.com/";console.log("baseURL:",o);function n(a){if(a.ok)return a.json();throw new Error("Bad Response")}class d{async getData(t){const e=await fetch(`${o}products/search/${encodeURIComponent(t)}`);return(await n(e)).Result}async findProductById(t){const e=await fetch(`${o}product/${t}`);return(await n(e)).Result}async getProductsByCount(t=4){const e=await this.getData("tents");return["880RR","985RF","985PR","344YJ"].map(c=>e.find(r=>r.Id===c)).filter(Boolean).slice(0,t)}}export{d as P};
+export { E as P } from "./ExternalServices.js";

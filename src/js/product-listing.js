@@ -1,11 +1,11 @@
-import ProductData from "./ProductData.mjs";
+import ExternalServices from "./ExternalServices.mjs";
 import ProductList from "./ProductList.mjs";
 import { getParam, LoadHeaderFooter } from "./utils.mjs";
 
 const category = getParam("category") || "tents";
 const searchTerm = getParam("search");
 const query = searchTerm || category;
-const dataSource = new ProductData();
+const dataSource = new ExternalServices();
 const productListElement = document.querySelector(".product-list");
 const title = document.querySelector(".product-listing__title");
 const sort = document.querySelector(".product-sort");
