@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sleep Outside | Register</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/main.js" type="module"></script>
+  <script src="/js/register.js" type="module"></script>
+</head>
+
+<body>
+  <header class="divider" id="header"></header>
+
+  <main class="divider">
+    <section class="products">
+      <h2>Customer Registration</h2>
+      <p class="form-intro">Create your account to save your cart and make checkout faster.</p>
+      <form class="account-form" id="register-form" novalidate>
+        <div class="form-row">
+          <label for="first-name">First Name</label>
+          <input id="first-name" name="firstName" type="text" required />
+        </div>
+        <div class="form-row">
+          <label for="last-name">Last Name</label>
+          <input id="last-name" name="lastName" type="text" required />
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required />
+        </div>
+        <div class="form-row">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" minlength="6" required />
+        </div>
+        <div class="form-row">
+          <label for="confirm-password">Confirm Password</label>
+          <input id="confirm-password" name="confirmPassword" type="password" minlength="6" required />
+        </div>
+        <div class="form-message hide" id="form-message"></div>
+        <button type="submit">Register</button>
+      </form>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+</body>
+
+</html>
