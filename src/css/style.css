@@ -247,8 +247,7 @@ button {
 }
 
 /* Cart page product list override */
-.cart .product-list,
-.products .product-list {
+.cart-products .product-list {
   display: block;
   width: 100%;
 }

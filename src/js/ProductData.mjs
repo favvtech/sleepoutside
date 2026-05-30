@@ -1,5 +1,7 @@
 const baseURL = import.meta.env.VITE_SERVER_URL;
+// The next two lines are used for debugging the Base and full URLs
 console.log("baseURL:", baseURL);
+console.log("full URL:", `${baseURL}products/search/tents`);
 
 function convertToJson(res) {
   if (res.ok) {
