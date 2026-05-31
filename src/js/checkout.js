@@ -18,6 +18,9 @@ if (zipCode) {
 if (form) {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    console.log("Form submit intercepted!");  // TODO DEBUG
+    const result = await checkout.checkout(form);  // TODO DEBUG
+    console.log("Server response:", result);  // TODO DEBUG
     await checkout.checkout(form);
     form.reset();
   });

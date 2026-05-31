@@ -15,12 +15,13 @@ export default class CheckoutProcess {
   }
 
   init() {
-    const storedCart = getLocalStorage(this.key);
-    this.list = Array.isArray(storedCart)
-      ? storedCart
-      : storedCart
-        ? [storedCart]
-        : [];
+    // const storedCart = getLocalStorage(this.key);
+    // this.list = Array.isArray(storedCart)
+    //   ? storedCart
+    //   : storedCart
+    //     ? [storedCart]
+    //     : [];
+    this.list = getLocalStorage(this.key) || [];
     this.calculateItemSubtotal();
   }
 
@@ -46,7 +47,10 @@ export default class CheckoutProcess {
   }
 
   displayOrderTotals() {
-    this.setSummaryText("subtotal", this.itemSubtotal);
+    const numItems = document.querySelector(`${this.outputSelector} #num-items`);
+    if (numItems) numItems.textContent = this.itemCount;
+
+    this.setSummaryText("cartTotal", this.itemSubtotal);
     this.setSummaryText("tax", this.tax);
     this.setSummaryText("shipping", this.shipping);
     this.setSummaryText("orderTotal", this.orderTotal);
@@ -74,27 +78,35 @@ export default class CheckoutProcess {
   }
 
   async checkout(form) {
-    const formData = this.formDataToJSON(form);
+    const order = this.formDataToJSON(form);
+    // convert from yyyy-mm to m/yy
+    // if (order.expiration) {
+    //   const [year, month] = order.expiration.split("-");
+    //   order.expiration = `${parseInt(month)}/${year.slice(2)}`;
+    // }
     this.calculateOrderTotal();
 
-    const payload = {
-      orderDate: new Date().toISOString(),
-      fname: formData.firstName,
-      lname: formData.lastName,
-      street: formData.streetAddress,
-      city: formData.city,
-      state: formData.state,
-      zip: formData.zipCode,
-      cardNumber: formData.cardNumber,
-      expiration: formData.expirationDate,
-      code: formData.securityCode,
-      items: this.packageItems(this.list),
-      orderTotal: this.orderTotal.toFixed(2),
-      shipping: this.shipping,
-      tax: this.tax.toFixed(2),
-    };
+    // const payload = {
+      // fname: formData.firstName,
+      // lname: formData.lastName,
+      // street: formData.streetAddress,
+      // city: formData.city,
+      // state: formData.state,
+      // zip: formData.zipCode,
+      // cardNumber: formData.cardNumber,
+      // expiration: formData.expirationDate,
+    // code: formData.securityCode,
+    order.orderDate = new Date().toISOString();
+    order.items = this.packageItems(this.list);
+    order.orderTotal = this.orderTotal.toFixed(2);
+    order.shipping = this.shipping;
+    order.tax = this.tax.toFixed(2);
+    order.cardNumber = order.cardNumber.replace(/\s/g, "");  
+    // };
 
-    const response = await this.services.checkout(payload);
+    console.log("Order being sent:", order);  // TODO: DEBUG
+
+    const response = await this.services.checkout(order);
     clearLocalStorage(this.key);
     updateCartCount();
     return response;
