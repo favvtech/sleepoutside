@@ -79,6 +79,25 @@ export function updateCartCount() {
   cartCount.classList.toggle("hide", count === 0);
 }
 
+export function alertMessage(message, scroll = true) {
+  const main = document.querySelector("main");
+  if (!main) {
+    return;
+  }
+
+  const alert = document.createElement("section");
+  alert.classList.add("message-alert");
+  alert.innerHTML = `<p>${message}</p><button type="button" aria-label="Close message">X</button>`;
+  alert.querySelector("button").addEventListener("click", () => {
+    alert.remove();
+  });
+  main.prepend(alert);
+
+  if (scroll) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
 export function setClick(selector, callback) {
   qs(selector).addEventListener("touchend", (event) => {
     event.preventDefault();
