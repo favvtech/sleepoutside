@@ -583,3 +583,70 @@ footer {
 .cart-animate svg {
   animation: cart-pulse 0.4s ease-in-out;
 }
+
+/* Backlog 3 - Call to action-register with site */
+/* Added by Cliff Cummings */
+/* Register banner styles */
+.register-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.register-banner p {
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  font-size: var(--large-font);
+}
+
+.register-banner__buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.register-banner__register {
+  background-color: var(--primary-color);
+  color: var(--dark-grey);
+  padding: 0.4em 1em;
+  font-size: var(--small-font);
+  margin: 0;
+}
+
+.register-banner__register:hover {
+  background-color: white;
+}
+
+.register-banner__dismiss {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 0.4em 1em;
+  font-size: var(--small-font);
+  margin: 0;
+}
+
+.register-banner__dismiss:hover {
+  background-color: white;
+  color: var(--dark-grey);
+}
+
+.register-banner__close {
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-size: var(--large-font);
+  padding: 0.2em 0.4em;
+  margin: 0;
+  cursor: pointer;
+}
+
+.register-banner__close:hover {
+  color: var(--primary-color);
+}
