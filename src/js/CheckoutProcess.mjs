@@ -106,9 +106,14 @@ export default class CheckoutProcess {
 
     console.log("Order being sent:", order);  // TODO: DEBUG
 
-    const response = await this.services.checkout(order);
-    clearLocalStorage(this.key);
-    updateCartCount();
-    return response;
+    try {
+      const response = await this.services.checkout(order);
+      clearLocalStorage(this.key);
+      updateCartCount();
+      return response;
+    } catch (error) {
+      console.error("Checkout error: ", error);
+      throw error;
+    }
   }
 }
