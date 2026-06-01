@@ -168,3 +168,49 @@ export function animateCartIcon() {
     cart.classList.remove("cart-animate");
   }, { once: true });
 }
+
+export function showRegisterBanner() {
+  // Only show if they haven't seen it before
+  if (localStorage.getItem("registerBannerSeen")) {
+    return;
+  }
+
+  // Create the banner element
+  const banner = document.createElement("div");
+  banner.classList.add("register-banner");
+  banner.innerHTML = `
+    <p>Register today for a chance to win a free tent!</p>
+    <div class="register-banner__buttons">
+      <a href="/register/index.html">
+        <button type="button" class="register-banner__register">Register Now</button>
+      </a>
+      <button type="button" class="register-banner__dismiss">No Thanks</button>
+      <button type="button" class="register-banner__close">✕</button>
+    </div>
+  `;
+
+  // Add click listeners for all three buttons
+  banner.querySelector(".register-banner__close").addEventListener("click", () => {
+    dismissBanner(banner);
+  });
+
+  banner.querySelector(".register-banner__dismiss").addEventListener("click", () => {
+    dismissBanner(banner);
+  });
+
+  banner.querySelector(".register-banner__register").addEventListener("click", () => {
+    dismissBanner(banner);
+  });
+
+  // Insert at the top of main
+  const main = document.querySelector("main");
+  if (main) {
+    main.prepend(banner);
+  }
+}
+
+function dismissBanner(banner) {
+  // Remember that they have seen it
+  localStorage.setItem("registerBannerSeen", "true");
+  banner.remove();
+}
