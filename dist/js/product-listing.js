@@ -1,4 +1,4 @@
-import{r as p,b as l,d as y,e as g,L as P}from"./utils.js";import{E as $}from"./ExternalServices.js";function i(t,e){var r,s;return((r=t.Images)==null?void 0:r[e])||t.Image||((s=t.Images)==null?void 0:s.PrimaryMedium)||""}function S(t){return[[i(t,"PrimarySmall"),"80w"],[i(t,"PrimaryMedium"),"160w"],[i(t,"PrimaryLarge"),"320w"]].filter(([r])=>r).map(([r,s])=>`${l(r)} ${s}`).join(", ")}function L(t,e){const r=i(t,"PrimaryMedium"),s=S(t),a=t.Category||e||"",f=a?`&category=${a}`:"";return`<li class="product-card">
+import{r as p,b as l,e as y,f as g,L as P}from"./utils.js";import{E as $}from"./ExternalServices.js";function i(t,e){var r,s;return((r=t.Images)==null?void 0:r[e])||t.Image||((s=t.Images)==null?void 0:s.PrimaryMedium)||""}function S(t){return[[i(t,"PrimarySmall"),"80w"],[i(t,"PrimaryMedium"),"160w"],[i(t,"PrimaryLarge"),"320w"]].filter(([r])=>r).map(([r,s])=>`${l(r)} ${s}`).join(", ")}function L(t,e){const r=i(t,"PrimaryMedium"),s=S(t),a=t.Category||e||"",f=a?`&category=${a}`:"";return`<li class="product-card">
   <a href="/product_pages/?product=${t.Id}${f}">
     <img
       src="${l(r)}"

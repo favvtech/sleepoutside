@@ -258,6 +258,27 @@ button {
   font-weight: bold;
 }
 
+.message-alert {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  margin: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--primary-color);
+  background-color: #fff7ef;
+}
+
+.message-alert p {
+  padding: 0;
+}
+
+.message-alert button {
+  margin: 0;
+  padding: 0.25rem 0.5rem;
+  font-size: var(--small-font);
+}
+
 .mission {
   position: absolute;
   top: 1rem;

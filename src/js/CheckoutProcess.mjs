@@ -1,5 +1,10 @@
 import ExternalServices from "./ExternalServices.mjs";
-import { clearLocalStorage, getLocalStorage, updateCartCount } from "./utils.mjs";
+import {
+  alertMessage,
+  clearLocalStorage,
+  getLocalStorage,
+  updateCartCount,
+} from "./utils.mjs";
 
 export default class CheckoutProcess {
   constructor(key, outputSelector) {
@@ -15,13 +20,12 @@ export default class CheckoutProcess {
   }
 
   init() {
-    // const storedCart = getLocalStorage(this.key);
-    // this.list = Array.isArray(storedCart)
-    //   ? storedCart
-    //   : storedCart
-    //     ? [storedCart]
-    //     : [];
-    this.list = getLocalStorage(this.key) || [];
+    const storedCart = getLocalStorage(this.key);
+    this.list = Array.isArray(storedCart)
+      ? storedCart
+      : storedCart
+        ? [storedCart]
+        : [];
     this.calculateItemSubtotal();
   }
 
@@ -78,37 +82,41 @@ export default class CheckoutProcess {
   }
 
   async checkout(form) {
-    const order = this.formDataToJSON(form);
-    // convert from yyyy-mm to m/yy
-    // if (order.expiration) {
-    //   const [year, month] = order.expiration.split("-");
-    //   order.expiration = `${parseInt(month)}/${year.slice(2)}`;
-    // }
-    this.calculateOrderTotal();
+    try {
+      const order = this.formDataToJSON(form);
+      this.calculateOrderTotal();
 
-    // const payload = {
-      // fname: formData.firstName,
-      // lname: formData.lastName,
-      // street: formData.streetAddress,
-      // city: formData.city,
-      // state: formData.state,
-      // zip: formData.zipCode,
-      // cardNumber: formData.cardNumber,
-      // expiration: formData.expirationDate,
-    // code: formData.securityCode,
-    order.orderDate = new Date().toISOString();
-    order.items = this.packageItems(this.list);
-    order.orderTotal = this.orderTotal.toFixed(2);
-    order.shipping = this.shipping;
-    order.tax = this.tax.toFixed(2);
-    order.cardNumber = order.cardNumber.replace(/\s/g, "");  
-    // };
+      order.orderDate = new Date().toISOString();
+      order.items = this.packageItems(this.list);
+      order.orderTotal = this.orderTotal.toFixed(2);
+      order.shipping = this.shipping;
+      order.tax = this.tax.toFixed(2);
+      order.cardNumber = order.cardNumber.replace(/\s/g, "");
 
-    console.log("Order being sent:", order);  // TODO: DEBUG
+      const response = await this.services.checkout(order);
+      clearLocalStorage(this.key);
+      updateCartCount();
+      window.location.href = "/checkout/success.html";
+      return response;
+    } catch (error) {
+      alertMessage(this.getErrorMessage(error));
+      return null;
+    }
+  }
 
-    const response = await this.services.checkout(order);
-    clearLocalStorage(this.key);
-    updateCartCount();
-    return response;
+  getErrorMessage(error) {
+    if (typeof error.message === "string") {
+      return error.message;
+    }
+
+    if (error.message?.message) {
+      return error.message.message;
+    }
+
+    if (error.message) {
+      return JSON.stringify(error.message);
+    }
+
+    return "Unable to process your order. Please check your information and try again.";
   }
 }
