@@ -6,8 +6,9 @@ async function convertToJson(res) {
   } else {
     const errorText = await res.json();
     console.log("Server error response:", errorText);
-    const errorMessage = Object.values(errorText)[0];
-    throw new Error(errorMessage);
+    throw {
+      name: 'servicesError', message: errorText
+    };
   }
 }
 

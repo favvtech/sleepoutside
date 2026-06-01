@@ -20,16 +20,16 @@ if (form) {
     event.preventDefault();
     console.log("Form submit intercepted!");  // TODO DEBUG
     try {
-      const result = await checkout.checkout(form);  // TODO DEBUG
+      const result = await checkout.checkout(form);
       console.log("Server response:", result);  // TODO DEBUG
       // Success - order was placed so reset the form
       alert(`Your order was successfully placed`)
       form.reset();
-      window.location.href = "/index.html";
+      window.location.href = "/checkout/success.html";
     } catch (error) {
       // The order was not accepted
       console.error("Checkout error: ", error);
-      alert(`Checkout failed: ${error.message}`)
+      alert(`Checkout failed: ${Object.values(error.message)[0]}`);
     }
   });
 }
