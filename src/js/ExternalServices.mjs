@@ -4,9 +4,10 @@ async function convertToJson(res) {
   if (res.ok) {
     return res.json();
   } else {
-    const errorText = await res.text();
+    const errorText = await res.json();
     console.log("Server error response:", errorText);
-    throw new Error("Bad Response");
+    const errorMessage = Object.values(errorText)[0];
+    throw new Error(errorMessage);
   }
 }
 

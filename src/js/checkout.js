@@ -19,9 +19,17 @@ if (form) {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     console.log("Form submit intercepted!");  // TODO DEBUG
-    const result = await checkout.checkout(form);  // TODO DEBUG
-    console.log("Server response:", result);  // TODO DEBUG
-    await checkout.checkout(form);
-    form.reset();
+    try {
+      const result = await checkout.checkout(form);  // TODO DEBUG
+      console.log("Server response:", result);  // TODO DEBUG
+      // Success - order was placed so reset the form
+      alert(`Your order was successfully placed`)
+      form.reset();
+      window.location.href = "/index.html";
+    } catch (error) {
+      // The order was not accepted
+      console.error("Checkout error: ", error);
+      alert(`Checkout failed: ${error.message}`)
+    }
   });
 }
