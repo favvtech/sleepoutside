@@ -278,6 +278,15 @@ button,
   font-weight: bold;
 }
 
+.breadcrumbs a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
 .mission {
   position: absolute;
   top: 1rem;

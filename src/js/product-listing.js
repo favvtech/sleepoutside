@@ -108,8 +108,15 @@ function updateBreadcrumb(products) {
     return;
   }
 
-  const label = searchTerm ? "Search Results" : formatCategory(category);
-  breadcrumbs.textContent = `${label}->(${products.length} items)`;
+  const homeCrumb = `<a href="/index.html">Home</a>`;
+  if (searchTerm) {
+    breadcrumbs.innerHTML = `${homeCrumb} &gt; Search results for "${searchTerm}" (${products.length} items)`;
+    return;
+  }
+
+  const categoryLabel = formatCategory(category);
+  const categoryLink = `<a href="/product_listing/index.html?category=${encodeURIComponent(category)}">${categoryLabel}</a>`;
+  breadcrumbs.innerHTML = `${homeCrumb} &gt; ${categoryLink} &gt; ${products.length} items`;
 }
 
 async function init() {

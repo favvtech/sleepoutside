@@ -62,11 +62,22 @@ export default class ProductDetails {
     const breadcrumbs = document.querySelector(".breadcrumbs");
 
     if (breadcrumbs) {
-      const category = this.category || product.Category;
-      breadcrumbs.textContent = category
+      const category = this.category || product.Category || "";
+      const categoryName = category
         .split("-")
         .map((word) => word[0].toUpperCase() + word.slice(1))
         .join(" ");
+      const homeLink = `<a href="/index.html">Home</a>`;
+      const categoryLink = categoryName
+        ? `<a href="/product_listing/index.html?category=${encodeURIComponent(category)}">${categoryName}</a>`
+        : "";
+      const productName = product.NameWithoutBrand || "Product";
+
+      if (categoryLink) {
+        breadcrumbs.innerHTML = `${homeLink} &gt; ${categoryLink} &gt; ${productName}`;
+      } else {
+        breadcrumbs.innerHTML = `${homeLink} &gt; ${productName}`;
+      }
     }
 
     priceEl.textContent = `$${product.FinalPrice.toFixed(2)}`;
