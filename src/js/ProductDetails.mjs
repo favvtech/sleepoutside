@@ -57,7 +57,7 @@ export default class ProductDetails {
       cart.push({ ...product, Quantity: 1 });
     }
 
-    setLocalStorage("so-cart", cart);
+    setCartItems(cart);
     updateCartCount();
   }
 
@@ -212,13 +212,17 @@ export default class ProductDetails {
       product.NameWithoutBrand;
 
     const img = document.querySelector(".product-detail img");
-    img.src = getImageUrl(product.Images.PrimaryLarge);
+    img.src = getImageUrl(product.Images.PrimaryMedium || product.Images.PrimaryLarge);
     img.srcset = [
-      `${getImageUrl(product.Images.PrimaryMedium)} 160w`,
-      `${getImageUrl(product.Images.PrimaryLarge)} 320w`,
-      `${getImageUrl(product.Images.PrimaryExtraLarge)} 600w`,
-    ].join(", ");
-    img.sizes = "(min-width: 700px) 500px, 100vw";
+      [product.Images.PrimarySmall, "80w"],
+      [product.Images.PrimaryMedium, "160w"],
+      [product.Images.PrimaryLarge, "320w"],
+      [product.Images.PrimaryExtraLarge, "600w"],
+    ]
+      .filter(([image]) => image)
+      .map(([image, width]) => `${getImageUrl(image)} ${width}`)
+      .join(", ");
+    img.sizes = "(max-width: 700px) 100vw, 500px";
     img.alt = product.NameWithoutBrand;
 
     const retailEl = document.querySelector(".product-card__price--retail");
@@ -228,11 +232,22 @@ export default class ProductDetails {
     const breadcrumbs = document.querySelector(".breadcrumbs");
 
     if (breadcrumbs) {
-      const category = this.category || product.Category;
-      breadcrumbs.textContent = category
+      const category = this.category || product.Category || "";
+      const categoryName = category
         .split("-")
         .map((word) => word[0].toUpperCase() + word.slice(1))
         .join(" ");
+      const homeLink = `<a href="/index.html">Home</a>`;
+      const categoryLink = categoryName
+        ? `<a href="/product_listing/index.html?category=${encodeURIComponent(category)}">${categoryName}</a>`
+        : "";
+      const productName = product.NameWithoutBrand || "Product";
+
+      if (categoryLink) {
+        breadcrumbs.innerHTML = `${homeLink} &gt; ${categoryLink} &gt; ${productName}`;
+      } else {
+        breadcrumbs.innerHTML = `${homeLink} &gt; ${productName}`;
+      }
     }
 
     priceEl.textContent = `$${product.FinalPrice.toFixed(2)}`;
@@ -243,7 +258,7 @@ export default class ProductDetails {
       retailEl.classList.remove("hide");
       discountEl.textContent = `Save $${savings.toFixed(2)}`;
       discountEl.classList.remove("hide");
-      discountFlagEl.textContent = `-$${savings.toFixed(2)}`;
+      discountFlagEl.textContent = `Save $${savings.toFixed(2)}`;
       discountFlagEl.classList.remove("hide");
     } else {
       retailEl.textContent = "";

@@ -42,6 +42,8 @@ export function qs(selector, parent = document) {
   return parent.querySelector(selector);
 }
 
+let previousCartCount = null;
+
 export function getLocalStorage(key) {
   const rawValue = localStorage.getItem(key);
   if (!rawValue) {
@@ -85,11 +87,16 @@ export function getCustomerStorageKey(prefix, customer = getCurrentCustomer()) {
 
 export function getCartCount() {
   const storedCart = getLocalStorage("so-cart");
-  const cartItems = Array.isArray(storedCart)
-    ? storedCart
-    : storedCart
-      ? [storedCart]
-      : [];
+  return normalizeCartItems(storedCart);
+}
+
+export function setCartItems(cart) {
+  const cartArray = Array.isArray(cart) ? cart : [cart];
+  setLocalStorage("so-cart", normalizeCartItems(cartArray));
+}
+
+export function getCartCount() {
+  const cartItems = getCartItems();
 
   return cartItems.reduce(
     (total, item) => total + (Number(item.Quantity) || 1),
@@ -99,6 +106,7 @@ export function getCartCount() {
 
 export function updateCartCount() {
   const cartCount = document.querySelector(".cart-count");
+  const cartWrapper = document.querySelector(".cart");
   if (!cartCount) {
     return;
   }
@@ -106,6 +114,17 @@ export function updateCartCount() {
   const count = getCartCount();
   cartCount.textContent = count;
   cartCount.classList.toggle("hide", count === 0);
+
+  if (previousCartCount !== null && count > previousCartCount && cartWrapper) {
+    cartWrapper.classList.add("cart-added");
+    cartWrapper.addEventListener(
+      "animationend",
+      () => cartWrapper.classList.remove("cart-added"),
+      { once: true },
+    );
+  }
+
+  previousCartCount = count;
 }
 
 export function alertMessage(message, scroll = true) {

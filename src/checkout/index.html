@@ -20,6 +20,75 @@
     <main class="divider">
       <section class="products">
         <h2>Review & Place your Order</h2>
+        <p class="form-intro">Complete the form below to place your order and finish checkout.</p>
+
+        <div class="checkout-summary" id="checkout-summary"></div>
+
+        <form class="account-form" id="checkout-form" novalidate>
+          <div class="form-row">
+            <label for="first-name">First Name</label>
+            <input id="first-name" name="firstName" type="text" autocomplete="given-name" required />
+          </div>
+
+          <div class="form-row">
+            <label for="last-name">Last Name</label>
+            <input id="last-name" name="lastName" type="text" autocomplete="family-name" required />
+          </div>
+
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+
+          <div class="form-row">
+            <label for="address">Shipping Address</label>
+            <input id="address" name="address" type="text" autocomplete="street-address" required />
+          </div>
+
+          <div class="form-row">
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" autocomplete="address-level2" required />
+          </div>
+
+          <div class="form-row">
+            <label for="state">State / Province</label>
+            <input id="state" name="state" type="text" autocomplete="address-level1" required />
+          </div>
+
+          <div class="form-row">
+            <label for="postal-code">Postal Code</label>
+            <input id="postal-code" name="postalCode" type="text" autocomplete="postal-code" required />
+          </div>
+
+          <div class="form-row">
+            <label for="country">Country</label>
+            <input id="country" name="country" type="text" autocomplete="country-name" required />
+          </div>
+
+          <div class="form-row">
+            <label for="card-name">Cardholder Name</label>
+            <input id="card-name" name="cardName" type="text" autocomplete="cc-name" required />
+          </div>
+
+          <div class="form-row">
+            <label for="card-number">Card Number</label>
+            <input id="card-number" name="cardNumber" type="text" autocomplete="cc-number" inputmode="numeric" required />
+          </div>
+
+          <div class="form-row">
+            <label for="expiry">Expiration Date (MM/YY)</label>
+            <input id="expiry" name="expiry" type="text" autocomplete="cc-exp" placeholder="MM/YY" required />
+          </div>
+
+          <div class="form-row">
+            <label for="cvc">CVC</label>
+            <input id="cvc" name="cvc" type="text" autocomplete="cc-csc" inputmode="numeric" required />
+          </div>
+
+          <div class="form-message hide" id="checkout-message"></div>
+
+          <button type="submit">Place Order</button>
+        </form>
       </section>
 
       <form class="checkout-form" name="checkout">

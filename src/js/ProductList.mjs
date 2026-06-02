@@ -26,7 +26,7 @@ function productCardTemplate(product, category) {
   <a href="/product_pages/?product=${product.Id}${categoryParam}">
     <img
       src="${getImageUrl(image)}"
-      ${srcset ? `srcset="${srcset}" sizes="(min-width: 700px) 160px, 80px"` : ""}
+      ${srcset ? `srcset="${srcset}" sizes="(min-width: 900px) 250px, (min-width: 700px) 180px, 80vw"` : ""}
       alt="${product.Name}"
     />
     <h3 class="card__brand">${product.Brand.Name}</h3>
@@ -75,18 +75,35 @@ export default class ProductList {
   sortProducts(sortBy) {
     const sortedProducts = [...this.products];
 
-    if (sortBy === "name") {
+    if (sortBy === "name-asc") {
       sortedProducts.sort((a, b) => a.Name.localeCompare(b.Name));
     }
 
-    if (sortBy === "price") {
-      sortedProducts.sort((a, b) => a.FinalPrice - b.FinalPrice);
+    if (sortBy === "name-desc") {
+      sortedProducts.sort((a, b) => b.Name.localeCompare(a.Name));
+    }
+
+    if (sortBy === "price-asc") {
+      sortedProducts.sort((a, b) => Number(a.FinalPrice) - Number(b.FinalPrice));
+    }
+
+    if (sortBy === "price-desc") {
+      sortedProducts.sort((a, b) => Number(b.FinalPrice) - Number(a.FinalPrice));
     }
 
     this.renderList(sortedProducts);
   }
 
   renderList(list) {
+    if (!list.length) {
+      this.listElement.innerHTML = `
+        <li class="product-list__empty">
+          No products found. Try a different search or browse another category.
+        </li>
+      `;
+      return;
+    }
+
     renderListWithTemplate(
       (product) => productCardTemplate(product, this.category),
       this.listElement,
