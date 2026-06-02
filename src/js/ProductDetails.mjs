@@ -1,9 +1,9 @@
 import {
   getDiscountAmount,
   getImageUrl,
-  getLocalStorage,
+  getCartItems,
   isDiscounted,
-  setLocalStorage,
+  setCartItems,
   updateCartCount,
 } from "./utils.mjs";
 
@@ -24,12 +24,7 @@ export default class ProductDetails {
   }
 
   addProductToCart() {
-    const storedCart = getLocalStorage("so-cart");
-    const cart = Array.isArray(storedCart)
-      ? storedCart
-      : storedCart
-        ? [storedCart]
-        : [];
+    const cart = getCartItems();
     const cartItem = cart.find((item) => item.Id === this.product.Id);
 
     if (cartItem) {
@@ -38,7 +33,7 @@ export default class ProductDetails {
       cart.push({ ...this.product, Quantity: 1 });
     }
 
-    setLocalStorage("so-cart", cart);
+    setCartItems(cart);
     updateCartCount();
   }
 

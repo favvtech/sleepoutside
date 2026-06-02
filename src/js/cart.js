@@ -1,18 +1,14 @@
 import {
   getImageUrl,
-  getLocalStorage,
+  getCartItems,
   LoadHeaderFooter,
-  setLocalStorage,
+  setCartItems,
   updateCartCount,
 } from "./utils.mjs";
 
-function getCartItems() {
-  const storedCart = getLocalStorage("so-cart");
-  if (!storedCart) {
-    return [];
-  }
-  const items = Array.isArray(storedCart) ? storedCart : [storedCart];
-  return items.filter(
+function getFilteredCartItems() {
+  const storedCart = getCartItems();
+  return storedCart.filter(
     (item) =>
       item &&
       typeof item === "object" &&
@@ -31,25 +27,25 @@ function getItemQuantity(item) {
 }
 
 function removeFromCart(indexToRemove) {
-  const cart = getCartItems();
+  const cart = getFilteredCartItems();
   if (indexToRemove < 0 || indexToRemove >= cart.length) {
     return;
   }
 
   cart.splice(indexToRemove, 1);
-  setLocalStorage("so-cart", cart);
+  setCartItems(cart);
   renderCartContents();
   updateCartCount();
 }
 
 function updateCartItemQuantity(indexToUpdate, quantity) {
-  const cart = getCartItems();
+  const cart = getFilteredCartItems();
   if (indexToUpdate < 0 || indexToUpdate >= cart.length) {
     return;
   }
 
   cart[indexToUpdate].Quantity = quantity;
-  setLocalStorage("so-cart", cart);
+  setCartItems(cart);
   renderCartContents();
   updateCartCount();
 }
@@ -87,7 +83,7 @@ function setupCartActions() {
 }
 
 function renderCartContents() {
-  const cartItems = getCartItems();
+  const cartItems = getFilteredCartItems();
   const listEl = document.querySelector(".product-list");
   if (!listEl) {
     return;

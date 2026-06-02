@@ -54,13 +54,21 @@ export function clearLocalStorage(key) {
   localStorage.removeItem(key);
 }
 
-export function getCartCount() {
+export function getCartItems() {
   const storedCart = getLocalStorage("so-cart");
-  const cartItems = Array.isArray(storedCart)
-    ? storedCart
-    : storedCart
-      ? [storedCart]
-      : [];
+  if (!storedCart) {
+    return [];
+  }
+  return Array.isArray(storedCart) ? storedCart : [storedCart];
+}
+
+export function setCartItems(cart) {
+  const cartArray = Array.isArray(cart) ? cart : [cart];
+  setLocalStorage("so-cart", cartArray);
+}
+
+export function getCartCount() {
+  const cartItems = getCartItems();
 
   return cartItems.reduce(
     (total, item) => total + (Number(item.Quantity) || 1),
