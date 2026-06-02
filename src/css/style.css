@@ -331,6 +331,14 @@ button {
   justify-content: center;
 }
 
+.product-list__empty {
+  width: 100%;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--dark-grey);
+  font-size: 1rem;
+}
+
 .product-list a {
   text-decoration: none;
   color: var(--dark-grey);

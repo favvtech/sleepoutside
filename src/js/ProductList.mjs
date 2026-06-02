@@ -95,6 +95,15 @@ export default class ProductList {
   }
 
   renderList(list) {
+    if (!list.length) {
+      this.listElement.innerHTML = `
+        <li class="product-list__empty">
+          No products found. Try a different search or browse another category.
+        </li>
+      `;
+      return;
+    }
+
     renderListWithTemplate(
       (product) => productCardTemplate(product, this.category),
       this.listElement,
