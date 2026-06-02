@@ -7,13 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Sleep Outside | Product Details</title>
-
-
-    <script type="module" crossorigin src="/assets/product-DHrxyXIQ.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/utils-BsOkHXPv.js">
-    <link rel="modulepreload" crossorigin href="/assets/ProductData-CDypgzgp.js">
-    <link rel="modulepreload" crossorigin href="/assets/main-DhDT_IkX.js">
-    <link rel="stylesheet" crossorigin href="/assets/utils-Bv8F-QOd.css">
+
+
+
+
+
+    <script type="module" crossorigin src="/js/product.js"></script>
+    <link rel="modulepreload" crossorigin href="/js/utils.js">
+    <link rel="modulepreload" crossorigin href="/js/ExternalServices.js">
+    <link rel="modulepreload" crossorigin href="/js/main2.js">
+    <link rel="stylesheet" crossorigin href="/css/style.css">
   </head>
 
   <body>
@@ -47,7 +50,21 @@
 
         <div class="product-detail__add">
           <button id="addToCart" data-id="">Add to Cart</button>
+          <button id="addToWishlist" type="button" data-id="">Add to Wishlist</button>
         </div>
+
+        <section class="product-comments">
+          <h3>Customer Comments</h3>
+          <div id="comment-list" class="comment-list"></div>
+          <form id="comment-form" class="comment-form">
+            <label for="comment-text">Add a comment</label>
+            <textarea id="comment-text" name="comment" rows="4" required></textarea>
+            <p class="comment-login-message hide">
+              Please <a href="/register/index.html">register or sign in</a> to add a comment.
+            </p>
+            <button type="submit">Post Comment</button>
+          </form>
+        </section>
       </section>
     </main>
 

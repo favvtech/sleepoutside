@@ -4,6 +4,7 @@ import {
   LoadHeaderFooter,
   setCartItems,
   updateCartCount,
+  animateCartIcon, // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 } from "./utils.mjs";
 
 function getFilteredCartItems() {
@@ -36,6 +37,7 @@ function removeFromCart(indexToRemove) {
   setCartItems(cart);
   renderCartContents();
   updateCartCount();
+  animateCartIcon(); // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 }
 
 function updateCartItemQuantity(indexToUpdate, quantity) {
@@ -48,6 +50,7 @@ function updateCartItemQuantity(indexToUpdate, quantity) {
   setCartItems(cart);
   renderCartContents();
   updateCartCount();
+  animateCartIcon(); // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 }
 
 function setupCartActions() {
@@ -128,8 +131,8 @@ function cartItemTemplate(item, index) {
       alt="${item.Name ?? "Cart item"}"
     />
   </a>
-  <a href="/product_pages/?product=${item.Id}">
-    <h2 class="card__name">${item.Name ?? ""}</h2>
+  <a href="/product_pages/?product=${item.Id}" class="card__name">
+    ${item.Name ?? ""}
   </a>
   <p class="cart-card__color">${colorName}</p>
   <label class="cart-card__quantity">
