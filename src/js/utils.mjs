@@ -239,11 +239,6 @@ export function showRegisterBanner() {
     return;
   }
 
-  // Only show if they haven't seen it before
-  if (localStorage.getItem("registerBannerSeen")) {
-    return;
-  }
-
   // Create the banner element
   const banner = document.createElement("div");
   banner.classList.add("register-banner");
@@ -279,7 +274,5 @@ export function showRegisterBanner() {
 }
 
 function dismissBanner(banner) {
-  // Remember that they have seen it
-  localStorage.setItem("registerBannerSeen", "true");
   banner.remove();
 }
