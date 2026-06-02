@@ -1,16 +1,18 @@
 import {
   getDiscountAmount,
   getImageUrl,
-  getLocalStorage,
+  getCartItems,
   isDiscounted,
-  setLocalStorage,
+  setCartItems,
+  updateCartCount,
 } from "./utils.mjs";
 
 export default class ProductDetails {
-  constructor(productId, dataSource) {
+  constructor(productId, dataSource, category) {
     this.productId = productId;
     this.product = {};
     this.dataSource = dataSource;
+    this.category = category;
   }
 
   async init() {
@@ -22,14 +24,18 @@ export default class ProductDetails {
   }
 
   addProductToCart() {
-    const storedCart = getLocalStorage("so-cart");
-    const cart = Array.isArray(storedCart)
-      ? storedCart
-      : storedCart
-        ? [storedCart]
-        : [];
-    cart.push(this.product);
-    setLocalStorage("so-cart", cart);
+    const cart = getCartItems();
+    const currentProductId = String(this.product.Id);
+    const cartItem = cart.find((item) => String(item.Id) === currentProductId);
+
+    if (cartItem) {
+      cartItem.Quantity = (Number(cartItem.Quantity) || 1) + 1;
+    } else {
+      cart.push({ ...this.product, Quantity: 1 });
+    }
+
+    setCartItems(cart);
+    updateCartCount();
   }
 
   renderProductDetails() {
@@ -41,12 +47,43 @@ export default class ProductDetails {
       product.NameWithoutBrand;
 
     const img = document.querySelector(".product-detail img");
-    img.src = getImageUrl(product.Images.PrimaryLarge);
+    img.src = getImageUrl(product.Images.PrimaryMedium || product.Images.PrimaryLarge);
+    img.srcset = [
+      [product.Images.PrimarySmall, "80w"],
+      [product.Images.PrimaryMedium, "160w"],
+      [product.Images.PrimaryLarge, "320w"],
+      [product.Images.PrimaryExtraLarge, "600w"],
+    ]
+      .filter(([image]) => image)
+      .map(([image, width]) => `${getImageUrl(image)} ${width}`)
+      .join(", ");
+    img.sizes = "(max-width: 700px) 100vw, 500px";
     img.alt = product.NameWithoutBrand;
 
     const retailEl = document.querySelector(".product-card__price--retail");
     const priceEl = document.querySelector(".product-card__price");
     const discountEl = document.querySelector(".product-discount");
+    const discountFlagEl = document.querySelector(".product-discount-flag");
+    const breadcrumbs = document.querySelector(".breadcrumbs");
+
+    if (breadcrumbs) {
+      const category = this.category || product.Category || "";
+      const categoryName = category
+        .split("-")
+        .map((word) => word[0].toUpperCase() + word.slice(1))
+        .join(" ");
+      const homeLink = `<a href="/index.html">Home</a>`;
+      const categoryLink = categoryName
+        ? `<a href="/product_listing/index.html?category=${encodeURIComponent(category)}">${categoryName}</a>`
+        : "";
+      const productName = product.NameWithoutBrand || "Product";
+
+      if (categoryLink) {
+        breadcrumbs.innerHTML = `${homeLink} &gt; ${categoryLink} &gt; ${productName}`;
+      } else {
+        breadcrumbs.innerHTML = `${homeLink} &gt; ${productName}`;
+      }
+    }
 
     priceEl.textContent = `$${product.FinalPrice.toFixed(2)}`;
 
@@ -56,11 +93,15 @@ export default class ProductDetails {
       retailEl.classList.remove("hide");
       discountEl.textContent = `Save $${savings.toFixed(2)}`;
       discountEl.classList.remove("hide");
+      discountFlagEl.textContent = `Save $${savings.toFixed(2)}`;
+      discountFlagEl.classList.remove("hide");
     } else {
       retailEl.textContent = "";
       retailEl.classList.add("hide");
       discountEl.textContent = "";
       discountEl.classList.add("hide");
+      discountFlagEl.textContent = "";
+      discountFlagEl.classList.add("hide");
     }
 
     document.querySelector(".product__color").textContent =

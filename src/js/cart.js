@@ -1,17 +1,14 @@
 import {
   getImageUrl,
-  getLocalStorage,
+  getCartItems,
   LoadHeaderFooter,
-  setLocalStorage,
+  setCartItems,
+  updateCartCount,
 } from "./utils.mjs";
 
-function getCartItems() {
-  const storedCart = getLocalStorage("so-cart");
-  if (!storedCart) {
-    return [];
-  }
-  const items = Array.isArray(storedCart) ? storedCart : [storedCart];
-  return items.filter(
+function getFilteredCartItems() {
+  const storedCart = getCartItems();
+  return storedCart.filter(
     (item) =>
       item &&
       typeof item === "object" &&
@@ -25,15 +22,32 @@ function getItemPrice(item) {
   return Number(item.FinalPrice) || 0;
 }
 
+function getItemQuantity(item) {
+  return Number(item.Quantity) || 1;
+}
+
 function removeFromCart(indexToRemove) {
-  const cart = getCartItems();
+  const cart = getFilteredCartItems();
   if (indexToRemove < 0 || indexToRemove >= cart.length) {
     return;
   }
 
   cart.splice(indexToRemove, 1);
-  setLocalStorage("so-cart", cart);
+  setCartItems(cart);
   renderCartContents();
+  updateCartCount();
+}
+
+function updateCartItemQuantity(indexToUpdate, quantity) {
+  const cart = getFilteredCartItems();
+  if (indexToUpdate < 0 || indexToUpdate >= cart.length) {
+    return;
+  }
+
+  cart[indexToUpdate].Quantity = quantity;
+  setCartItems(cart);
+  renderCartContents();
+  updateCartCount();
 }
 
 function setupCartActions() {
@@ -53,10 +67,23 @@ function setupCartActions() {
       removeFromCart(indexToRemove);
     }
   });
+
+  listEl.addEventListener("change", (event) => {
+    const quantityInput = event.target.closest(".cart-card__quantity-input");
+    if (!quantityInput) {
+      return;
+    }
+
+    const indexToUpdate = Number(quantityInput.dataset.index);
+    const quantity = Number(quantityInput.value);
+    if (Number.isInteger(indexToUpdate) && quantity > 0) {
+      updateCartItemQuantity(indexToUpdate, quantity);
+    }
+  });
 }
 
 function renderCartContents() {
-  const cartItems = getCartItems();
+  const cartItems = getFilteredCartItems();
   const listEl = document.querySelector(".product-list");
   if (!listEl) {
     return;
@@ -82,7 +109,10 @@ function renderCartTotal(cartItems) {
     totalEl.textContent = "Total: ";
     return;
   }
-  const total = cartItems.reduce((sum, item) => sum + getItemPrice(item), 0);
+  const total = cartItems.reduce(
+    (sum, item) => sum + getItemPrice(item) * getItemQuantity(item),
+    0,
+  );
   footer.classList.remove("hide");
   totalEl.textContent = `Total: $${total.toFixed(2)}`;
 }
@@ -102,7 +132,10 @@ function cartItemTemplate(item, index) {
     <h2 class="card__name">${item.Name ?? ""}</h2>
   </a>
   <p class="cart-card__color">${colorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
+  <label class="cart-card__quantity">
+    qty:
+    <input class="cart-card__quantity-input" type="number" min="1" value="${getItemQuantity(item)}" data-index="${index}" />
+  </label>
   <p class="cart-card__price">$${getItemPrice(item).toFixed(2)}</p>
   <button class="cart-card__remove" type="button" data-index="${index}" aria-label="Remove ${item.Name ?? "item"} from cart">Remove</button>
 </li>`;

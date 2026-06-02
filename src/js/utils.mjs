@@ -33,6 +33,8 @@ export function qs(selector, parent = document) {
   return parent.querySelector(selector);
 }
 
+let previousCartCount = null;
+
 export function getLocalStorage(key) {
   const rawValue = localStorage.getItem(key);
   if (!rawValue) {
@@ -52,6 +54,75 @@ export function setLocalStorage(key, data) {
 
 export function clearLocalStorage(key) {
   localStorage.removeItem(key);
+}
+
+export function normalizeCartItems(cart) {
+  if (!cart) {
+    return [];
+  }
+
+  const items = Array.isArray(cart) ? cart : [cart];
+  const normalized = new Map();
+
+  for (const item of items) {
+    if (!item || typeof item !== "object" || !item.Id) {
+      continue;
+    }
+
+    const id = String(item.Id);
+    const quantity = Number(item.Quantity) || 1;
+    const existingItem = normalized.get(id);
+
+    if (existingItem) {
+      existingItem.Quantity = (Number(existingItem.Quantity) || 1) + quantity;
+    } else {
+      normalized.set(id, { ...item, Quantity: quantity });
+    }
+  }
+
+  return [...normalized.values()];
+}
+
+export function getCartItems() {
+  const storedCart = getLocalStorage("so-cart");
+  return normalizeCartItems(storedCart);
+}
+
+export function setCartItems(cart) {
+  const cartArray = Array.isArray(cart) ? cart : [cart];
+  setLocalStorage("so-cart", normalizeCartItems(cartArray));
+}
+
+export function getCartCount() {
+  const cartItems = getCartItems();
+
+  return cartItems.reduce(
+    (total, item) => total + (Number(item.Quantity) || 1),
+    0,
+  );
+}
+
+export function updateCartCount() {
+  const cartCount = document.querySelector(".cart-count");
+  const cartWrapper = document.querySelector(".cart");
+  if (!cartCount) {
+    return;
+  }
+
+  const count = getCartCount();
+  cartCount.textContent = count;
+  cartCount.classList.toggle("hide", count === 0);
+
+  if (previousCartCount !== null && count > previousCartCount && cartWrapper) {
+    cartWrapper.classList.add("cart-added");
+    cartWrapper.addEventListener(
+      "animationend",
+      () => cartWrapper.classList.remove("cart-added"),
+      { once: true },
+    );
+  }
+
+  previousCartCount = count;
 }
 
 export function setClick(selector, callback) {
@@ -106,6 +177,7 @@ export async function LoadHeaderFooter() {
   const headerTemplate = await loadTemplate("../partials/header.html");
   const headerElement = document.querySelector("#header");
   renderWithTemplate(headerTemplate, headerElement);
+  updateCartCount();
 
   const footerTemplate = await loadTemplate("../partials/footer.html");
   const footerElement = document.querySelector("#footer");
