@@ -29,6 +29,15 @@ export function getImageUrl(path) {
   return `/${normalized}`;
 }
 
+export function escapeHtml(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
 }
@@ -40,8 +49,7 @@ export function getLocalStorage(key) {
   }
   try {
     return JSON.parse(rawValue);
-  } catch (error) {
-    console.warn(`Unable to parse localStorage value for ${key}:`, error);
+  } catch {
     return null;
   }
 }
@@ -52,6 +60,27 @@ export function setLocalStorage(key, data) {
 
 export function clearLocalStorage(key) {
   localStorage.removeItem(key);
+}
+
+export function getCurrentCustomer() {
+  return getLocalStorage("so-current-customer");
+}
+
+export function setCurrentCustomer(customer) {
+  setLocalStorage("so-current-customer", customer);
+}
+
+export function clearCurrentCustomer() {
+  clearLocalStorage("so-current-customer");
+}
+
+export function getCustomerStorageKey(prefix, customer = getCurrentCustomer()) {
+  if (!customer) {
+    return null;
+  }
+
+  const identifier = customer.id || customer.email;
+  return `${prefix}-${String(identifier).toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
 }
 
 export function getCartCount() {
@@ -151,10 +180,42 @@ export async function LoadHeaderFooter() {
   const headerElement = document.querySelector("#header");
   renderWithTemplate(headerTemplate, headerElement);
   updateCartCount();
+  updateAccountMenu();
 
   const footerTemplate = await loadTemplate("../partials/footer.html");
   const footerElement = document.querySelector("#footer");
   renderWithTemplate(footerTemplate, footerElement);
+}
+
+export function updateAccountMenu() {
+  const account = document.querySelector(".account");
+  if (!account) {
+    return;
+  }
+
+  const customer = getCurrentCustomer();
+  if (!customer) {
+    account.innerHTML = `
+      <a class="account-link" href="/register/index.html">Register</a>
+      <a class="account-link" href="/signin/index.html">Sign In</a>
+    `;
+    return;
+  }
+
+  const avatar = customer.avatar
+    ? `<img class="account-avatar" src="${escapeHtml(customer.avatar)}" alt="${escapeHtml(customer.firstName || customer.name || "Customer")} avatar" />`
+    : "";
+  account.innerHTML = `
+    ${avatar}
+    <span class="account-greeting">Hi, ${escapeHtml(customer.firstName || customer.name || "Customer")}</span>
+    <a class="account-link" href="/wishlist/index.html">Wishlist</a>
+    <button class="account-link account-logout" type="button">Logout</button>
+  `;
+  account.querySelector(".account-logout").addEventListener("click", () => {
+    clearCurrentCustomer();
+    localStorage.removeItem("registerBannerSeen");
+    window.location.href = "/index.html";
+  });
 }
 
 /* Backlog 3 - Animate cart (backpack) icon when item added to cart */
@@ -170,6 +231,14 @@ export function animateCartIcon() {
 }
 
 export function showRegisterBanner() {
+  if (
+    getCurrentCustomer() ||
+    !document.querySelector(".hero") ||
+    document.querySelector(".register-banner")
+  ) {
+    return;
+  }
+
   // Only show if they haven't seen it before
   if (localStorage.getItem("registerBannerSeen")) {
     return;

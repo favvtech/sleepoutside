@@ -1,7 +1,13 @@
 const baseURL = import.meta.env.VITE_SERVER_URL;
 
 async function convertToJson(res) {
-  const jsonResponse = await res.json();
+  const responseText = await res.text();
+  let jsonResponse = {};
+  try {
+    jsonResponse = responseText ? JSON.parse(responseText) : {};
+  } catch {
+    jsonResponse = { message: responseText || res.statusText };
+  }
 
   if (res.ok) {
     return jsonResponse;
@@ -34,6 +40,18 @@ export default class ExternalServices {
       body: JSON.stringify(payload),
     };
     const response = await fetch(`${baseURL}checkout`, options);
+    return convertToJson(response);
+  }
+
+  async createUser(payload) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    };
+    const response = await fetch(`${baseURL}users`, options);
     return convertToJson(response);
   }
 
