@@ -242,6 +242,19 @@ button {
   color: #2f5c2f;
 }
 
+.checkout-summary {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 8px;
+  background: #fafafa;
+  text-align: left;
+}
+
+.checkout-summary p {
+  margin: 0.5rem 0;
+}
+
 .form-row {
   display: grid;
   gap: 0.4rem;
