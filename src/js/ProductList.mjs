@@ -26,7 +26,7 @@ function productCardTemplate(product, category) {
   <a href="/product_pages/?product=${product.Id}${categoryParam}">
     <img
       src="${getImageUrl(image)}"
-      ${srcset ? `srcset="${srcset}" sizes="(min-width: 700px) 160px, 80px"` : ""}
+      ${srcset ? `srcset="${srcset}" sizes="(min-width: 900px) 250px, (min-width: 700px) 180px, 80vw"` : ""}
       alt="${product.Name}"
     />
     <h3 class="card__brand">${product.Brand.Name}</h3>

@@ -47,13 +47,17 @@ export default class ProductDetails {
       product.NameWithoutBrand;
 
     const img = document.querySelector(".product-detail img");
-    img.src = getImageUrl(product.Images.PrimaryLarge);
+    img.src = getImageUrl(product.Images.PrimaryMedium || product.Images.PrimaryLarge);
     img.srcset = [
-      `${getImageUrl(product.Images.PrimaryMedium)} 160w`,
-      `${getImageUrl(product.Images.PrimaryLarge)} 320w`,
-      `${getImageUrl(product.Images.PrimaryExtraLarge)} 600w`,
-    ].join(", ");
-    img.sizes = "(min-width: 700px) 500px, 100vw";
+      [product.Images.PrimarySmall, "80w"],
+      [product.Images.PrimaryMedium, "160w"],
+      [product.Images.PrimaryLarge, "320w"],
+      [product.Images.PrimaryExtraLarge, "600w"],
+    ]
+      .filter(([image]) => image)
+      .map(([image, width]) => `${getImageUrl(image)} ${width}`)
+      .join(", ");
+    img.sizes = "(max-width: 700px) 100vw, 500px";
     img.alt = product.NameWithoutBrand;
 
     const retailEl = document.querySelector(".product-card__price--retail");

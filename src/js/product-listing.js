@@ -19,6 +19,17 @@ const modal = document.getElementById("productQuickViewModal");
 const modalBody = modal?.querySelector(".product-modal__body");
 const listing = new ProductList(query, dataSource, productListElement);
 
+function getQuickViewImageSrcset(product) {
+  return [
+    [product.Images?.PrimarySmall, "80w"],
+    [product.Images?.PrimaryMedium, "160w"],
+    [product.Images?.PrimaryLarge, "320w"],
+  ]
+    .filter(([image]) => image)
+    .map(([image, width]) => `${getImageUrl(image)} ${width}`)
+    .join(", ");
+}
+
 function getQuickViewHtml(product) {
   const image = getImageUrl(
     product.Images?.PrimaryMedium ||
@@ -26,6 +37,7 @@ function getQuickViewHtml(product) {
       product.Image ||
       "",
   );
+  const srcset = getQuickViewImageSrcset(product);
   const categoryParam = product.Category
     ? `&category=${encodeURIComponent(product.Category)}`
     : "";
@@ -33,7 +45,7 @@ function getQuickViewHtml(product) {
   return `
     <div class="product-quick-view">
       <button class="product-modal__close" type="button" aria-label="Close quick view">&times;</button>
-      <img src="${image}" alt="${product.NameWithoutBrand}" />
+      <img src="${image}" ${srcset ? `srcset="${srcset}" sizes="(min-width: 700px) 320px, 80vw"` : ""} alt="${product.NameWithoutBrand}" />
       <h3 class="card__brand">${product.Brand?.Name || ""}</h3>
       <h2 class="card__name">${product.NameWithoutBrand}</h2>
       ${getListingPriceHtml(product)}
