@@ -25,7 +25,8 @@ export default class ProductDetails {
 
   addProductToCart() {
     const cart = getCartItems();
-    const cartItem = cart.find((item) => item.Id === this.product.Id);
+    const currentProductId = String(this.product.Id);
+    const cartItem = cart.find((item) => String(item.Id) === currentProductId);
 
     if (cartItem) {
       cartItem.Quantity = (Number(cartItem.Quantity) || 1) + 1;

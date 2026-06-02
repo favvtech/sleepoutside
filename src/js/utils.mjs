@@ -56,17 +56,41 @@ export function clearLocalStorage(key) {
   localStorage.removeItem(key);
 }
 
-export function getCartItems() {
-  const storedCart = getLocalStorage("so-cart");
-  if (!storedCart) {
+export function normalizeCartItems(cart) {
+  if (!cart) {
     return [];
   }
-  return Array.isArray(storedCart) ? storedCart : [storedCart];
+
+  const items = Array.isArray(cart) ? cart : [cart];
+  const normalized = new Map();
+
+  for (const item of items) {
+    if (!item || typeof item !== "object" || !item.Id) {
+      continue;
+    }
+
+    const id = String(item.Id);
+    const quantity = Number(item.Quantity) || 1;
+    const existingItem = normalized.get(id);
+
+    if (existingItem) {
+      existingItem.Quantity = (Number(existingItem.Quantity) || 1) + quantity;
+    } else {
+      normalized.set(id, { ...item, Quantity: quantity });
+    }
+  }
+
+  return [...normalized.values()];
+}
+
+export function getCartItems() {
+  const storedCart = getLocalStorage("so-cart");
+  return normalizeCartItems(storedCart);
 }
 
 export function setCartItems(cart) {
   const cartArray = Array.isArray(cart) ? cart : [cart];
-  setLocalStorage("so-cart", cartArray);
+  setLocalStorage("so-cart", normalizeCartItems(cartArray));
 }
 
 export function getCartCount() {
