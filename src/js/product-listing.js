@@ -1,5 +1,6 @@
 import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
+import Alert from "./Alert.js";
 import {
   getParam,
   LoadHeaderFooter,
@@ -133,6 +134,8 @@ function updateBreadcrumb(products) {
 
 async function init() {
   LoadHeaderFooter();
+  const alerts = new Alert();
+  await alerts.init();
   updateTitle();
 
   const products = await listing.init();
