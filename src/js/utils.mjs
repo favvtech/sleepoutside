@@ -84,8 +84,28 @@ export function getCustomerStorageKey(prefix, customer = getCurrentCustomer()) {
   const identifier = customer.id || customer.email;
   return `${prefix}-${String(identifier).toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
 }
+export function normalizeCartItems(cart) {
+  if (!cart) return [];
 
-export function getCartCount() {
+  const items = Array.isArray(cart) ? cart : [cart];
+  const normalized = new Map();
+
+  for (const item of items) {
+    if (!item || typeof item !== "object" || !item.Id) continue;
+    const id = String(item.Id);
+    const quantity = Number(item.Quantity) || 1;
+    const existing = normalized.get(id);
+    if (existing) {
+      existing.Quantity = (Number(existing.Quantity) || 1) + quantity;
+    } else {
+      normalized.set(id, { ...item, Quantity: quantity });
+    }
+  }
+
+  return [...normalized.values()];
+}
+
+export function getCartItems() {
   const storedCart = getLocalStorage("so-cart");
   return normalizeCartItems(storedCart);
 }
