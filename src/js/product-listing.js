@@ -1,6 +1,11 @@
 import ExternalServices from "./ExternalServices.mjs";
 import ProductList from "./ProductList.mjs";
-import { getParam, LoadHeaderFooter } from "./utils.mjs";
+import {
+  getParam,
+  LoadHeaderFooter,
+  getImageUrl,
+  getListingPriceHtml,
+} from "./utils.mjs";
 
 const category = getParam("category") || "tents";
 const searchTerm = getParam("search");
@@ -10,7 +15,73 @@ const productListElement = document.querySelector(".product-list");
 const title = document.querySelector(".product-listing__title");
 const sort = document.querySelector(".product-sort");
 const breadcrumbs = document.querySelector(".breadcrumbs");
+const modal = document.getElementById("productQuickViewModal");
+const modalBody = modal?.querySelector(".product-modal__body");
 const listing = new ProductList(query, dataSource, productListElement);
+
+function getQuickViewHtml(product) {
+  const image = getImageUrl(
+    product.Images?.PrimaryMedium ||
+      product.Images?.PrimaryLarge ||
+      product.Image ||
+      "",
+  );
+  const categoryParam = product.Category
+    ? `&category=${encodeURIComponent(product.Category)}`
+    : "";
+
+  return `
+    <div class="product-quick-view">
+      <button class="product-modal__close" type="button" aria-label="Close quick view">&times;</button>
+      <img src="${image}" alt="${product.NameWithoutBrand}" />
+      <h3 class="card__brand">${product.Brand?.Name || ""}</h3>
+      <h2 class="card__name">${product.NameWithoutBrand}</h2>
+      ${getListingPriceHtml(product)}
+      <div class="product-description">${product.DescriptionHtmlSimple || product.Description || ""}</div>
+      <a class="button" href="/product_pages/?product=${product.Id}${categoryParam}">View full product</a>
+    </div>
+  `;
+}
+
+function openQuickView(product) {
+  if (!modal || !modalBody) {
+    return;
+  }
+
+  modalBody.innerHTML = getQuickViewHtml(product);
+  modal.classList.remove("hide");
+}
+
+function closeQuickView() {
+  if (!modal) {
+    return;
+  }
+
+  modal.classList.add("hide");
+}
+
+productListElement?.addEventListener("click", async (event) => {
+  const quickViewButton = event.target.closest("[data-quick-view-id]");
+
+  if (!quickViewButton) {
+    return;
+  }
+
+  event.preventDefault();
+  const productId = quickViewButton.dataset.quickViewId;
+  const product = await dataSource.findProductById(productId);
+
+  openQuickView(product);
+});
+
+modal?.addEventListener("click", (event) => {
+  if (
+    event.target === modal ||
+    event.target.closest(".product-modal__close")
+  ) {
+    closeQuickView();
+  }
+});
 
 function formatCategory(value) {
   return value

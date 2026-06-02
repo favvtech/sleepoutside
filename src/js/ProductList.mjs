@@ -33,6 +33,9 @@ function productCardTemplate(product, category) {
     <h2 class="card__name">${product.NameWithoutBrand}</h2>
     ${getListingPriceHtml(product)}
   </a>
+  <button class="product-card__quick-view" type="button" data-quick-view-id="${product.Id}">
+    Quick View
+  </button>
 </li>`;
 }
 
