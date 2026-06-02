@@ -93,7 +93,7 @@ export default class ProductDetails {
       retailEl.classList.remove("hide");
       discountEl.textContent = `Save $${savings.toFixed(2)}`;
       discountEl.classList.remove("hide");
-      discountFlagEl.textContent = `-$${savings.toFixed(2)}`;
+      discountFlagEl.textContent = `Save $${savings.toFixed(2)}`;
       discountFlagEl.classList.remove("hide");
     } else {
       retailEl.textContent = "";
