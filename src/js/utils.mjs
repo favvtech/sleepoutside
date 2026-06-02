@@ -33,6 +33,8 @@ export function qs(selector, parent = document) {
   return parent.querySelector(selector);
 }
 
+let previousCartCount = null;
+
 export function getLocalStorage(key) {
   const rawValue = localStorage.getItem(key);
   if (!rawValue) {
@@ -78,6 +80,7 @@ export function getCartCount() {
 
 export function updateCartCount() {
   const cartCount = document.querySelector(".cart-count");
+  const cartWrapper = document.querySelector(".cart");
   if (!cartCount) {
     return;
   }
@@ -85,6 +88,17 @@ export function updateCartCount() {
   const count = getCartCount();
   cartCount.textContent = count;
   cartCount.classList.toggle("hide", count === 0);
+
+  if (previousCartCount !== null && count > previousCartCount && cartWrapper) {
+    cartWrapper.classList.add("cart-added");
+    cartWrapper.addEventListener(
+      "animationend",
+      () => cartWrapper.classList.remove("cart-added"),
+      { once: true },
+    );
+  }
+
+  previousCartCount = count;
 }
 
 export function setClick(selector, callback) {
