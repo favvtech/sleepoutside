@@ -75,12 +75,20 @@ export default class ProductList {
   sortProducts(sortBy) {
     const sortedProducts = [...this.products];
 
-    if (sortBy === "name") {
+    if (sortBy === "name-asc") {
       sortedProducts.sort((a, b) => a.Name.localeCompare(b.Name));
     }
 
-    if (sortBy === "price") {
-      sortedProducts.sort((a, b) => a.FinalPrice - b.FinalPrice);
+    if (sortBy === "name-desc") {
+      sortedProducts.sort((a, b) => b.Name.localeCompare(a.Name));
+    }
+
+    if (sortBy === "price-asc") {
+      sortedProducts.sort((a, b) => Number(a.FinalPrice) - Number(b.FinalPrice));
+    }
+
+    if (sortBy === "price-desc") {
+      sortedProducts.sort((a, b) => Number(b.FinalPrice) - Number(a.FinalPrice));
     }
 
     this.renderList(sortedProducts);
