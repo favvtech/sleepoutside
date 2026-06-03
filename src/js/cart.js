@@ -1,25 +1,15 @@
 import {
   getImageUrl,
-  getLocalStorage,
+  getCartItems,
   LoadHeaderFooter,
-  setLocalStorage,
+  setCartItems,
   updateCartCount,
+  animateCartIcon, // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 } from "./utils.mjs";
 
-function getCartItems() {
-  const storedCart = getLocalStorage("so-cart");
-  if (!storedCart) {
-    return [];
-  }
-  const items = Array.isArray(storedCart) ? storedCart : [storedCart];
-  return items.filter(
-    (item) =>
-      item &&
-      typeof item === "object" &&
-      item.Id &&
-      Array.isArray(item.Colors) &&
-      item.Colors.length > 0,
-  );
+function getFilteredCartItems() {
+  const storedCart = getCartItems();
+  return storedCart.filter((item) => item && typeof item === "object" && item.Id);
 }
 
 function getItemPrice(item) {
@@ -31,27 +21,29 @@ function getItemQuantity(item) {
 }
 
 function removeFromCart(indexToRemove) {
-  const cart = getCartItems();
+  const cart = getFilteredCartItems();
   if (indexToRemove < 0 || indexToRemove >= cart.length) {
     return;
   }
 
   cart.splice(indexToRemove, 1);
-  setLocalStorage("so-cart", cart);
+  setCartItems(cart);
   renderCartContents();
   updateCartCount();
+  animateCartIcon(); // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 }
 
 function updateCartItemQuantity(indexToUpdate, quantity) {
-  const cart = getCartItems();
+  const cart = getFilteredCartItems();
   if (indexToUpdate < 0 || indexToUpdate >= cart.length) {
     return;
   }
 
   cart[indexToUpdate].Quantity = quantity;
-  setLocalStorage("so-cart", cart);
+  setCartItems(cart);
   renderCartContents();
   updateCartCount();
+  animateCartIcon(); // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
 }
 
 function setupCartActions() {
@@ -87,7 +79,7 @@ function setupCartActions() {
 }
 
 function renderCartContents() {
-  const cartItems = getCartItems();
+  const cartItems = getFilteredCartItems();
   const listEl = document.querySelector(".product-list");
   if (!listEl) {
     return;
@@ -132,8 +124,8 @@ function cartItemTemplate(item, index) {
       alt="${item.Name ?? "Cart item"}"
     />
   </a>
-  <a href="/product_pages/?product=${item.Id}">
-    <h2 class="card__name">${item.Name ?? ""}</h2>
+  <a href="/product_pages/?product=${item.Id}" class="card__name">
+    ${item.Name ?? ""}
   </a>
   <p class="cart-card__color">${colorName}</p>
   <label class="cart-card__quantity">
