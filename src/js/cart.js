@@ -9,14 +9,7 @@ import {
 
 function getFilteredCartItems() {
   const storedCart = getCartItems();
-  return storedCart.filter(
-    (item) =>
-      item &&
-      typeof item === "object" &&
-      item.Id &&
-      Array.isArray(item.Colors) &&
-      item.Colors.length > 0,
-  );
+  return storedCart.filter((item) => item && typeof item === "object" && item.Id);
 }
 
 function getItemPrice(item) {
