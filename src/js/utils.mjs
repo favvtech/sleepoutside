@@ -87,23 +87,22 @@ export function getCustomerStorageKey(prefix, customer = getCurrentCustomer()) {
 
 export function getCartCount() {
   const storedCart = getLocalStorage("so-cart");
-  const cartItems = Array.isArray(storedCart)
-    ? storedCart
-    : storedCart
-      ? [storedCart]
-      : [];
+  return normalizeCartItems(storedCart);
+}
+
+export function setCartItems(cart) {
+  const cartArray = Array.isArray(cart) ? cart : [cart];
+  setLocalStorage("so-cart", normalizeCartItems(cartArray));
+}
+
+export function getCartCount() {
+  const cartItems = getCartItems();
 
   return cartItems.reduce(
     (total, item) => total + (Number(item.Quantity) || 1),
     0,
   );
 }
-
-export function setCartItems(cart) {
-  const cartArray = Array.isArray(cart) ? cart : [cart];
-  setLocalStorage("so-cart", cartArray);
-}
-
 
 export function updateCartCount() {
   const cartCount = document.querySelector(".cart-count");
