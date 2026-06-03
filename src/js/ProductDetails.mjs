@@ -7,6 +7,7 @@ import {
   getLocalStorage,
   isDiscounted,
   setLocalStorage,
+  setCartItems,
   alertMessage,
   updateCartCount,
   animateCartIcon, // Backlog 3 - Animate cart (backpack) icon when item added to cart - CEC
@@ -269,8 +270,33 @@ export default class ProductDetails {
       discountFlagEl.classList.add("hide");
     }
 
-    document.querySelector(".product__color").textContent =
-      product.Colors[0].ColorName;
+    const colorContainer = document.querySelector(".product__color");
+colorContainer.innerHTML = ""; // clear it
+
+product.Colors.forEach((color, index) => {
+  const swatch = document.createElement("button");
+  swatch.classList.add("color-swatch");
+  if (index === 0) swatch.classList.add("selected");
+  swatch.setAttribute("aria-label", color.ColorName);
+  swatch.setAttribute("title", color.ColorName);
+  swatch.dataset.colorName = color.ColorName;
+  swatch.dataset.previewSrc = color.ColorPreviewImageSrc;
+
+  const img = document.createElement("img");
+  img.src = color.ColorChipImageSrc;
+  img.alt = color.ColorName;
+
+  swatch.appendChild(img);
+  colorContainer.appendChild(swatch);
+
+  // When a swatch is clicked, update the main product image and mark it selected
+  swatch.addEventListener("click", () => {
+    document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected"));
+    swatch.classList.add("selected");
+    document.querySelector(".product-detail img").src = color.ColorPreviewImageSrc;
+    // Optional: update the selected color name somewhere
+  });
+});
     document.querySelector(".product__description").innerHTML =
       product.DescriptionHtmlSimple;
 

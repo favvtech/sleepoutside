@@ -514,6 +514,10 @@ button,
   padding: 1rem;
 }
 
+.product-modal.hide {
+  display: none;
+}
+
 .product-modal__content {
   position: relative;
   width: min(95%, 700px);
@@ -867,21 +871,20 @@ footer {
 /* Added by Cliff Cummings */
 /* Register banner styles */
 .register-banner {
+  background-color: #2c2c2c;
+  color: white;
+  padding: 1rem 1.5rem;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 1.5rem;
-  background-color: var(--secondary-color);
-  color: white;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 
 .register-banner p {
   margin: 0;
-  padding: 0;
-  font-weight: bold;
-  font-size: var(--large-font);
+  font-size: 1rem;
 }
 
 .register-banner__buttons {
@@ -891,41 +894,51 @@ footer {
 }
 
 .register-banner__register {
-  background-color: var(--primary-color);
-  color: var(--dark-grey);
-  padding: 0.4em 1em;
-  font-size: var(--small-font);
-  margin: 0;
+  background-color: #e07b39;
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.register-banner__dismiss,
+.register-banner__close {
+  background: none;
+  color: white;
+  border: 1px solid white;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 .register-banner__register:hover {
-  background-color: white;
+  background-color: #c96a2e;
 }
 
-.register-banner__dismiss {
-  background-color: transparent;
-  color: white;
-  border: 1px solid white;
-  padding: 0.4em 1em;
-  font-size: var(--small-font);
-  margin: 0;
+/*Product Colors*/
+.product__color {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 1rem 0;
 }
 
-.register-banner__dismiss:hover {
-  background-color: white;
-  color: var(--dark-grey);
-}
-
-.register-banner__close {
-  background-color: transparent;
-  color: white;
-  border: none;
-  font-size: var(--large-font);
-  padding: 0.2em 0.4em;
-  margin: 0;
+.color-swatch {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  padding: 2px;
   cursor: pointer;
+  background: none;
 }
 
-.register-banner__close:hover {
-  color: var(--primary-color);
+.color-swatch img {
+  width: 40px;
+  height: 40px;
+  display: block;
+  border-radius: 2px;
+}
+
+.color-swatch.selected {
+  border-color: #333;
 }
