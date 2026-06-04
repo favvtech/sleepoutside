@@ -55,15 +55,15 @@ await Promise.all(
 
 await writeFile(
   join(process.cwd(), "dist", "js", "ProductData.js"),
-  'export { E as P } from "./ExternalServices.js";\n',
+  "export { E as P } from \"./ExternalServices.js\";\n",
 );
 
 await writeFile(
   join(process.cwd(), "dist", "assets", "ProductData-BzbZu8QD.js"),
-  'export { E as P } from "../js/ExternalServices.js";\n',
+  "export { E as P } from \"../js/ExternalServices.js\";\n",
 );
 
 await writeFile(
   join(process.cwd(), "dist", "assets", "ProductData-CDypgzgp.js"),
-  'export { E as P } from "../js/ExternalServices.js";\n',
+  "export { E as P } from \"../js/ExternalServices.js\";\n",
 );
