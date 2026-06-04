@@ -1,6 +1,9 @@
 import {
+  alertMessage,
   getImageUrl,
   getCartItems,
+  getCurrentCustomer,
+  getParam,
   LoadHeaderFooter,
   setCartItems,
   updateCartCount,
@@ -48,6 +51,16 @@ function updateCartItemQuantity(indexToUpdate, quantity) {
 
 function setupCartActions() {
   const listEl = document.querySelector(".product-list");
+  const checkoutButton = document.querySelector(".cart-checkout");
+
+  if (checkoutButton) {
+    checkoutButton.addEventListener("click", handleCheckoutClick);
+  }
+
+  if (getParam("checkout") === "login-required") {
+    showCheckoutLoginMessage();
+  }
+
   if (!listEl) {
     return;
   }
@@ -76,6 +89,27 @@ function setupCartActions() {
       updateCartItemQuantity(indexToUpdate, quantity);
     }
   });
+}
+
+function showCheckoutLoginMessage() {
+  if (document.querySelector(".checkout-login-alert")) {
+    return;
+  }
+
+  const redirect = encodeURIComponent("/checkout/index.html");
+  const alert = alertMessage(
+    `Please <a href="/register/index.html?redirect=${redirect}">register</a> or <a href="/signin/index.html?redirect=${redirect}">sign in</a> before checking out.`,
+  );
+  alert?.classList.add("checkout-login-alert");
+}
+
+function handleCheckoutClick() {
+  if (getCurrentCustomer()) {
+    window.location.href = "/checkout/index.html";
+    return;
+  }
+
+  showCheckoutLoginMessage();
 }
 
 function renderCartContents() {

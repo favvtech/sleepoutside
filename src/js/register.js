@@ -1,5 +1,6 @@
 import ExternalServices from "./ExternalServices.mjs";
 import {
+  getParam,
   getLocalStorage,
   setCurrentCustomer,
   setLocalStorage,
@@ -13,6 +14,15 @@ const message = qs("#form-message");
 const loginMessage = qs("#login-message");
 const storageKey = "so-customers";
 const services = new ExternalServices();
+
+function getSuccessRedirect() {
+  const redirect = getParam("redirect");
+  if (!redirect || !redirect.startsWith("/") || redirect.startsWith("//")) {
+    return "/index.html";
+  }
+
+  return redirect;
+}
 
 function getCustomers() {
   const stored = getLocalStorage(storageKey);
@@ -177,7 +187,7 @@ async function handleSubmit(event) {
 
     showMessage("Registration successful! You are now signed in.", "success");
     form.reset();
-    window.location.href = "/index.html";
+    window.location.href = getSuccessRedirect();
   } catch (error) {
     showMessage(getErrorMessage(error));
   }
@@ -209,7 +219,7 @@ function handleLogin(event) {
   updateAccountMenu();
   showLoginMessage("You are signed in.", "success");
   loginForm.reset();
-  window.location.href = "/index.html";
+  window.location.href = getSuccessRedirect();
 }
 
 function migrateExistingCustomer() {

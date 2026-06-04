@@ -271,32 +271,42 @@ export default class ProductDetails {
     }
 
     const colorContainer = document.querySelector(".product__color");
-colorContainer.innerHTML = ""; // clear it
+    colorContainer.innerHTML = "";
 
-product.Colors.forEach((color, index) => {
-  const swatch = document.createElement("button");
-  swatch.classList.add("color-swatch");
-  if (index === 0) swatch.classList.add("selected");
-  swatch.setAttribute("aria-label", color.ColorName);
-  swatch.setAttribute("title", color.ColorName);
-  swatch.dataset.colorName = color.ColorName;
-  swatch.dataset.previewSrc = color.ColorPreviewImageSrc;
+    product.Colors.forEach((color, index) => {
+      const swatch = document.createElement("button");
+      swatch.classList.add("color-swatch");
+      if (index === 0) swatch.classList.add("selected");
+      swatch.setAttribute("aria-label", color.ColorName);
+      swatch.setAttribute("title", color.ColorName);
 
-  const img = document.createElement("img");
-  img.src = color.ColorChipImageSrc;
-  img.alt = color.ColorName;
+      const chipImage = color.ColorChipImageSrc || color.ColorPreviewImageSrc;
+      const previewImage =
+        color.ColorPreviewImageSrc ||
+        product.Images.PrimaryMedium ||
+        product.Images.PrimaryLarge;
 
-  swatch.appendChild(img);
-  colorContainer.appendChild(swatch);
+      if (chipImage) {
+        const swatchImage = document.createElement("img");
+        swatchImage.src = getImageUrl(chipImage);
+        swatchImage.alt = color.ColorName;
+        swatch.appendChild(swatchImage);
+      } else {
+        swatch.textContent = color.ColorName;
+      }
 
-  // When a swatch is clicked, update the main product image and mark it selected
-  swatch.addEventListener("click", () => {
-    document.querySelectorAll(".color-swatch").forEach(s => s.classList.remove("selected"));
-    swatch.classList.add("selected");
-    document.querySelector(".product-detail img").src = color.ColorPreviewImageSrc;
-    // Optional: update the selected color name somewhere
-  });
-});
+      colorContainer.appendChild(swatch);
+
+      swatch.addEventListener("click", () => {
+        document
+          .querySelectorAll(".color-swatch")
+          .forEach((button) => button.classList.remove("selected"));
+        swatch.classList.add("selected");
+        const productImage = document.querySelector(".product-detail img");
+        productImage.src = getImageUrl(previewImage);
+        productImage.srcset = "";
+      });
+    });
     document.querySelector(".product__description").innerHTML =
       product.DescriptionHtmlSimple;
 

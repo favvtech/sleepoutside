@@ -26,21 +26,27 @@ const compatibilityAssets = [
   ["dist/css/style.css", "dist/assets/utils-CauCxvKc.css"],
   ["dist/css/style.css", "dist/assets/utils-Bmkw5Q76.css"],
   ["dist/css/style.css", "dist/assets/utils-DKq3Bsbm.css"],
+  ["dist/css/style.css", "dist/assets/utils-Bv8F-QOd.css"],
   ["dist/js/utils.js", "dist/assets/utils-CGGOHlq-.js"],
   ["dist/js/utils.js", "dist/assets/utils-9vrMJyM5.js"],
   ["dist/js/utils.js", "dist/assets/utils-DnA3psMX.js"],
+  ["dist/js/utils.js", "dist/assets/utils-BsOkHXPv.js"],
   ["dist/js/main2.js", "dist/assets/main--EOQpHS9.js"],
   ["dist/js/main2.js", "dist/assets/main-4iW2Os6y.js"],
   ["dist/js/main2.js", "dist/assets/main-BavQrC0a.js"],
+  ["dist/js/main2.js", "dist/assets/main-DhDT_IkX.js"],
   ["dist/js/product-listing.js", "dist/assets/productListing-VkPN6sO3.js"],
   ["dist/js/product-listing.js", "dist/assets/productListing-CB4deUsJ.js"],
   ["dist/js/product-listing.js", "dist/assets/productListing-DT9occWR.js"],
+  ["dist/js/product-listing.js", "dist/assets/productListing-D_5JTnL0.js"],
   ["dist/js/product.js", "dist/assets/product-DDhEML1E.js"],
   ["dist/js/product.js", "dist/assets/product-uMpZ8vMB.js"],
   ["dist/js/product.js", "dist/assets/product-jvd-MuqI.js"],
+  ["dist/js/product.js", "dist/assets/product-DHrxyXIQ.js"],
   ["dist/js/cart.js", "dist/assets/cart-c0vQ6zrP.js"],
   ["dist/js/cart.js", "dist/assets/cart-zqm1BApn.js"],
   ["dist/js/cart.js", "dist/assets/cart-Clel23dG.js"],
+  ["dist/js/cart.js", "dist/assets/cart-Cl1U53xV.js"],
 ];
 
 await Promise.all(
@@ -54,5 +60,10 @@ await writeFile(
 
 await writeFile(
   join(process.cwd(), "dist", "assets", "ProductData-BzbZu8QD.js"),
+  'export { E as P } from "../js/ExternalServices.js";\n',
+);
+
+await writeFile(
+  join(process.cwd(), "dist", "assets", "ProductData-CDypgzgp.js"),
   'export { E as P } from "../js/ExternalServices.js";\n',
 );

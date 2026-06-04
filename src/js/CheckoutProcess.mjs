@@ -91,7 +91,7 @@ export default class CheckoutProcess {
       order.orderTotal = this.orderTotal.toFixed(2);
       order.shipping = this.shipping;
       order.tax = this.tax.toFixed(2);
-      order.cardNumber = order.cardNumber.replace(/\s/g, "");
+      order.cardNumber = order.cardNumber.replace(/\D/g, "");
 
       const response = await this.services.checkout(order);
       clearLocalStorage(this.key);

@@ -107,11 +107,11 @@ export function normalizeCartItems(cart) {
 
 export function getCartItems() {
   const storedCart = getLocalStorage("so-cart");
-  const cartItems = Array.isArray(storedCart)
-    ? storedCart
-    : storedCart
-      ? [storedCart]
-      : [];
+  return normalizeCartItems(storedCart);
+}
+
+export function getCartCount() {
+  const cartItems = getCartItems();
 
   return cartItems.reduce(
     (total, item) => total + (Number(item.Quantity) || 1),
@@ -120,8 +120,7 @@ export function getCartItems() {
 }
 
 export function setCartItems(cart) {
-  const cartArray = Array.isArray(cart) ? cart : [cart];
-  setLocalStorage("so-cart", cartArray);
+  setLocalStorage("so-cart", normalizeCartItems(cart));
 }
 
 
@@ -165,6 +164,8 @@ export function alertMessage(message, scroll = true) {
   if (scroll) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
+
+  return alert;
 }
 
 export function setClick(selector, callback) {

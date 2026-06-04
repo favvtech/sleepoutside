@@ -1,25 +1,29 @@
-import{r as _,a as m,b as p,c as $,L as b}from"./utils-BsOkHXPv.js";import{P as I}from"./ProductData-CDypgzgp.js";function n(t,e){var r,a;return((r=t.Images)==null?void 0:r[e])||t.Image||((a=t.Images)==null?void 0:a.PrimaryMedium)||""}function S(t){return[[n(t,"PrimarySmall"),"80w"],[n(t,"PrimaryMedium"),"160w"],[n(t,"PrimaryLarge"),"320w"]].filter(([r])=>r).map(([r,a])=>`${m(r)} ${a}`).join(", ")}function L(t,e){const r=n(t,"PrimaryMedium"),a=S(t),s=t.Category||e||"",c=s?`&category=${s}`:"";return`<li class="product-card">
-  <a href="/product_pages/?product=${t.Id}${c}">
+import{r as _,e as d,n as $,g as w,L as I}from"./utils.js";import{E as L}from"./ExternalServices.js";import{A as S}from"./Alert.js";function o(e,t){var r,i;return((r=e.Images)==null?void 0:r[t])||e.Image||((i=e.Images)==null?void 0:i.PrimaryMedium)||""}function k(e){return[[o(e,"PrimarySmall"),"80w"],[o(e,"PrimaryMedium"),"160w"],[o(e,"PrimaryLarge"),"320w"]].filter(([r])=>r).map(([r,i])=>`${d(r)} ${i}`).join(", ")}function v(e,t){const r=o(e,"PrimaryMedium"),i=k(e),a=e.Category||t||"",n=a?`&category=${a}`:"";return`<li class="product-card">
+  <a href="/product_pages/?product=${e.Id}${n}">
     <img
-      src="${m(r)}"
-      ${a?`srcset="${a}" sizes="(min-width: 700px) 160px, 80px"`:""}
-      alt="${t.Name}"
+      src="${d(r)}"
+      ${i?`srcset="${i}" sizes="(min-width: 900px) 250px, (min-width: 700px) 180px, 80vw"`:""}
+      alt="${e.Name}"
     />
-    <h3 class="card__brand">${t.Brand.Name}</h3>
-    <h2 class="card__name">${t.NameWithoutBrand}</h2>
-    ${p(t)}
+    <h3 class="card__brand">${e.Brand.Name}</h3>
+    <h2 class="card__name">${e.NameWithoutBrand}</h2>
+    ${$(e)}
   </a>
-  <button class="product-card__quick-view" type="button" data-quick-view-id="${t.Id}">
+  <button class="product-card__quick-view" type="button" data-quick-view-id="${e.Id}">
     Quick View
   </button>
-</li>`}function k(t){return t.NameWithoutBrand.split(" - ")[0]}function q(t){const e=new Set;return t.filter(r=>{const a=k(r);return e.has(a)?!1:(e.add(a),!0)})}class v{constructor(e,r,a){this.category=e,this.dataSource=r,this.listElement=a,this.products=[]}async init(){const e=await this.dataSource.getData(this.category);return this.products=q(e),this.renderList(this.products),this.products}sortProducts(e){const r=[...this.products];e==="name"&&r.sort((a,s)=>a.Name.localeCompare(s.Name)),e==="price"&&r.sort((a,s)=>a.FinalPrice-s.FinalPrice),this.renderList(r)}renderList(e){_(r=>L(r,this.category),this.listElement,e,"afterbegin",!0)}}const g=$("category")||"tents",u=$("search"),C=u||g,P=new I,o=document.querySelector(".product-list"),d=document.querySelector(".product-listing__title"),l=document.querySelector(".product-sort"),h=document.querySelector(".breadcrumbs"),i=document.getElementById("productQuickViewModal"),y=i==null?void 0:i.querySelector(".product-modal__body"),f=new v(C,P,o);function B(t){var a,s,c;const e=m(((a=t.Images)==null?void 0:a.PrimaryMedium)||((s=t.Images)==null?void 0:s.PrimaryLarge)||t.Image||""),r=t.Category?`&category=${encodeURIComponent(t.Category)}`:"";return`
+</li>`}function N(e){return e.NameWithoutBrand.split(" - ")[0]}function C(e){const t=new Set;return e.filter(r=>{const i=N(r);return t.has(i)?!1:(t.add(i),!0)})}class q{constructor(t,r,i){this.category=t,this.dataSource=r,this.listElement=i,this.products=[]}async init(){const t=await this.dataSource.getData(this.category);return this.products=C(t),this.renderList(this.products),this.products}sortProducts(t){const r=[...this.products];t==="name-asc"&&r.sort((i,a)=>i.Name.localeCompare(a.Name)),t==="name-desc"&&r.sort((i,a)=>a.Name.localeCompare(i.Name)),t==="price-asc"&&r.sort((i,a)=>Number(i.FinalPrice)-Number(a.FinalPrice)),t==="price-desc"&&r.sort((i,a)=>Number(a.FinalPrice)-Number(i.FinalPrice)),this.renderList(r)}renderList(t){if(!t.length){this.listElement.innerHTML=`
+        <li class="product-list__empty">
+          No products found. Try a different search or browse another category.
+        </li>
+      `;return}_(r=>v(r,this.category),this.listElement,t,"afterbegin",!0)}}const m=w("category")||"tents",c=w("search"),x=c||m,P=new L,u=document.querySelector(".product-list"),l=document.querySelector(".product-listing__title"),g=document.querySelector(".product-sort"),h=document.querySelector(".breadcrumbs"),s=document.getElementById("productQuickViewModal"),y=s==null?void 0:s.querySelector(".product-modal__body"),p=new q(x,P,u);function M(e){var t,r,i;return[[(t=e.Images)==null?void 0:t.PrimarySmall,"80w"],[(r=e.Images)==null?void 0:r.PrimaryMedium,"160w"],[(i=e.Images)==null?void 0:i.PrimaryLarge,"320w"]].filter(([a])=>a).map(([a,n])=>`${d(a)} ${n}`).join(", ")}function T(e){var a,n,f;const t=d(((a=e.Images)==null?void 0:a.PrimaryMedium)||((n=e.Images)==null?void 0:n.PrimaryLarge)||e.Image||""),r=M(e),i=e.Category?`&category=${encodeURIComponent(e.Category)}`:"";return`
     <div class="product-quick-view">
       <button class="product-modal__close" type="button" aria-label="Close quick view">&times;</button>
-      <img src="${e}" alt="${t.NameWithoutBrand}" />
-      <h3 class="card__brand">${((c=t.Brand)==null?void 0:c.Name)||""}</h3>
-      <h2 class="card__name">${t.NameWithoutBrand}</h2>
-      ${p(t)}
-      <div class="product-description">${t.DescriptionHtmlSimple||t.Description||""}</div>
-      <a class="button" href="/product_pages/?product=${t.Id}${r}">View full product</a>
+      <img src="${t}" ${r?`srcset="${r}" sizes="(min-width: 700px) 320px, 80vw"`:""} alt="${e.NameWithoutBrand}" />
+      <h3 class="card__brand">${((f=e.Brand)==null?void 0:f.Name)||""}</h3>
+      <h2 class="card__name">${e.NameWithoutBrand}</h2>
+      ${$(e)}
+      <div class="product-description">${e.DescriptionHtmlSimple||e.Description||""}</div>
+      <a class="button" href="/product_pages/?product=${e.Id}${i}">View full product</a>
     </div>
-  `}function N(t){!i||!y||(y.innerHTML=B(t),i.classList.remove("hide"))}function V(){i&&i.classList.add("hide")}o==null||o.addEventListener("click",async t=>{const e=t.target.closest("[data-quick-view-id]");if(!e)return;t.preventDefault();const r=e.dataset.quickViewId,a=await P.findProductById(r);N(a)});i==null||i.addEventListener("click",t=>{(t.target===i||t.target.closest(".product-modal__close"))&&V()});function w(t){return t.split("-").map(e=>e[0].toUpperCase()+e.slice(1)).join(" ")}function x(){if(d){if(u){d.textContent=`Search Results: ${u}`;return}d.textContent=`Top Products: ${w(g)}`}}function M(t){if(!h)return;const e=u?"Search Results":w(g);h.textContent=`${e}->(${t.length} items)`}async function T(){b(),x();const t=await f.init();M(t),l&&l.addEventListener("change",()=>{f.sortProducts(l.value)})}T();
+  `}function H(e){!s||!y||(y.innerHTML=T(e),s.classList.remove("hide"))}function V(){s&&s.classList.add("hide")}u==null||u.addEventListener("click",async e=>{const t=e.target.closest("[data-quick-view-id]");if(!t)return;e.preventDefault();const r=t.dataset.quickViewId,i=await P.findProductById(r);H(i)});s==null||s.addEventListener("click",e=>{(e.target===s||e.target.closest(".product-modal__close"))&&V()});function b(e){return e.split("-").map(t=>t[0].toUpperCase()+t.slice(1)).join(" ")}function B(){if(l){if(c){l.textContent=`Search Results: ${c}`;return}l.textContent=`Top Products: ${b(m)}`}}function E(e){if(!h)return;const t='<a href="/index.html">Home</a>';if(c){h.innerHTML=`${t} &gt; Search results for "${c}" (${e.length} items)`;return}const r=b(m),i=`<a href="/product_listing/index.html?category=${encodeURIComponent(m)}">${r}</a>`;h.innerHTML=`${t} &gt; ${i} &gt; ${e.length} items`}async function F(){I(),await new S().init(),B();const t=await p.init();E(t),g&&g.addEventListener("change",()=>{p.sortProducts(g.value)})}F();

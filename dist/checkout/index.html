@@ -7,13 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Sleep Outside | Checkout</title>
+
 
-
-
-
-    <script type="module" crossorigin src="/assets/utils-BsOkHXPv.js"></script>
-    <script type="module" crossorigin src="/assets/main-DhDT_IkX.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/utils-Bv8F-QOd.css">
+    <script type="module" crossorigin src="/js/checkout.js"></script>
+    <link rel="modulepreload" crossorigin href="/js/utils.js">
+    <link rel="modulepreload" crossorigin href="/js/ExternalServices.js">
+    <link rel="stylesheet" crossorigin href="/css/style.css">
   </head>
 
   <body>
@@ -23,9 +22,10 @@
     <main class="divider">
       <section class="products">
         <h2>Review & Place your Order</h2>
+        <p class="form-intro">Complete the form below to place your order and finish checkout.</p>
       </section>
 
-      <form class="checkout-form" name="checkout">
+      <form class="checkout-form" name="checkout" hidden>
         <fieldset>
           <legend>Customer Name</legend>
       
@@ -58,11 +58,9 @@
           <label for="cardNumber">Credit Card Number</label>
           <input type="text" id="cardNumber" name="cardNumber"
             inputmode="numeric"
-            pattern="^(?:\d\s*){16}$" 
-            minlength="16" 
-            maxlength="19" 
+            maxlength="23" 
             required 
-            title="Please enter a 16-digit card number (spaces allowed)." />
+            title="Please enter a 16-digit card number." />
       
           <label for="expirationDate">Expiration Date</label>
           <input type="text" id="expirationDate" name="expiration" 
@@ -97,3 +95,4 @@
     </footer>
   </body>
 </html>
+
