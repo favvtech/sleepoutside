@@ -1,1 +1,1 @@
-import{A as e}from"./Alert.js";import{t as o,L as r}from"./utils.js";const t=!!document.querySelector(".hero");t&&(new e().init(),o());r();
+import{o as e,v as o,L as r}from"./utils.js";const s=!!document.querySelector(".hero");s&&(e(),o());r();

@@ -168,6 +168,40 @@ export function alertMessage(message, scroll = true) {
   return alert;
 }
 
+export async function showSiteAlerts(path = "/json/alerts.json") {
+  let alerts = [];
+
+  try {
+    const response = await fetch(path);
+    if (response.ok) {
+      const data = await response.json();
+      alerts = Array.isArray(data) ? data : [];
+    }
+  } catch {
+    alerts = [];
+  }
+
+  if (!alerts.length) {
+    return;
+  }
+
+  const section = document.createElement("section");
+  section.classList.add("alert-list");
+
+  alerts.forEach((alert) => {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = alert.message;
+    paragraph.style.backgroundColor = alert.background;
+    paragraph.style.color = alert.color;
+    section.appendChild(paragraph);
+  });
+
+  const main = document.querySelector("main");
+  if (main) {
+    main.prepend(section);
+  }
+}
+
 export function setClick(selector, callback) {
   qs(selector).addEventListener("touchend", (event) => {
     event.preventDefault();

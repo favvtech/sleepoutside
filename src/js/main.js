@@ -1,11 +1,9 @@
-import Alert from "./Alert.js";
-import { LoadHeaderFooter, showRegisterBanner } from "./utils.mjs";
+import { LoadHeaderFooter, showRegisterBanner, showSiteAlerts } from "./utils.mjs";
 
 const isHomePage = Boolean(document.querySelector(".hero"));
 
 if (isHomePage) {
-  const alerts = new Alert();
-  alerts.init();
+  showSiteAlerts();
   showRegisterBanner();
 }
 

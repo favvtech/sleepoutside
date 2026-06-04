@@ -1,11 +1,11 @@
 import ExternalServices from "./ExternalServices.mjs";
 import ProductList from "./ProductList.mjs";
-import Alert from "./Alert.js";
 import {
   getParam,
   LoadHeaderFooter,
   getImageUrl,
   getListingPriceHtml,
+  showSiteAlerts,
 } from "./utils.mjs";
 
 const category = getParam("category") || "tents";
@@ -134,8 +134,7 @@ function updateBreadcrumb(products) {
 
 async function init() {
   LoadHeaderFooter();
-  const alerts = new Alert();
-  await alerts.init();
+  await showSiteAlerts();
   updateTitle();
 
   const products = await listing.init();
