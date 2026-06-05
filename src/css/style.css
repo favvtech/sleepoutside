@@ -327,6 +327,64 @@ button,
   color: #2f5c2f;
 }
 
+.admin-orders {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.orders-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.order-card {
+  border: 1px solid var(--light-grey);
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fff;
+}
+
+.order-card h3,
+.order-card p,
+.order-card li {
+  margin: 0.4rem 0;
+}
+
+.order-card .order-meta {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.order-card .order-items {
+  margin: 0.75rem 0 0;
+  padding-left: 1rem;
+}
+
+.order-card .order-status {
+  font-weight: bold;
+  color: var(--secondary-color);
+}
+
+.order-card button {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  background: var(--primary-color);
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.order-card button:disabled {
+  background: var(--light-grey);
+  cursor: not-allowed;
+}
+
 .checkout-summary {
   margin: 1rem 0;
   padding: 1rem;
@@ -428,6 +486,55 @@ button,
   height: 70px;
   width: 70px;
   object-fit: contain;
+}
+
+.newsletter-signup {
+  margin: 2rem auto;
+  max-width: 640px;
+  padding: 1.5rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 12px;
+  background: #fff;
+  text-align: left;
+}
+
+.newsletter-signup h2 {
+  margin-top: 0;
+}
+
+.newsletter-signup p {
+  margin: 0 0 1rem;
+  color: var(--dark-grey);
+}
+
+.newsletter-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.newsletter-form input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 4px;
+}
+
+.newsletter-form button {
+  width: auto;
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  border: none;
+  background-color: var(--secondary-color);
+  color: white;
+  cursor: pointer;
+}
+
+.newsletter-form button:hover {
+  opacity: 0.95;
+}
+
+.newsletter-form .form-message {
+  margin-top: 0.5rem;
 }
 
 .product-list {

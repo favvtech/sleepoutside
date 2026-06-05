@@ -64,6 +64,24 @@ export function clearLocalStorage(key) {
   localStorage.removeItem(key);
 }
 
+const authTokenKey = "so-auth-token";
+
+export function getAuthToken() {
+  return localStorage.getItem(authTokenKey);
+}
+
+export function setAuthToken(token) {
+  if (token == null) {
+    localStorage.removeItem(authTokenKey);
+    return;
+  }
+  localStorage.setItem(authTokenKey, String(token));
+}
+
+export function clearAuthToken() {
+  localStorage.removeItem(authTokenKey);
+}
+
 export function getCurrentCustomer() {
   return getLocalStorage("so-current-customer");
 }

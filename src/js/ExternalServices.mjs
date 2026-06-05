@@ -55,6 +55,42 @@ export default class ExternalServices {
     return convertToJson(response);
   }
 
+  async login(payload) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    };
+    const response = await fetch(`${baseURL}auth/login`, options);
+    return convertToJson(response);
+  }
+
+  async getOrders(token) {
+    const options = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(`${baseURL}orders`, options);
+    return convertToJson(response);
+  }
+
+  async subscribeNewsletter(payload) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    };
+
+    const response = await fetch(`${baseURL}newsletter`, options);
+    return convertToJson(response);
+  }
+
   async getProductsByCount(count = 4) {
     const products = await this.getData("tents");
     const featuredIds = ["880RR", "985RF", "985PR", "344YJ"];
