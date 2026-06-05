@@ -3,13 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sleep Outside | Product Listing</title>
-
-
-    <script type="module" crossorigin src="/assets/productListing-D_5JTnL0.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/utils-BsOkHXPv.js">
-    <link rel="modulepreload" crossorigin href="/assets/ProductData-CDypgzgp.js">
-    <link rel="stylesheet" crossorigin href="/assets/utils-Bv8F-QOd.css">
+    <title>Sleep Outside | Product Listing</title>
+    <script type="module" crossorigin src="/js/product-listing.js"></script>
+    <link rel="modulepreload" crossorigin href="/js/utils.js">
+    <link rel="modulepreload" crossorigin href="/js/ExternalServices.js">
+    <link rel="modulepreload" crossorigin href="/js/Alert.js">
+    <link rel="stylesheet" crossorigin href="/css/style.css">
   </head>
 
   <body>
@@ -24,8 +23,10 @@
           <label for="product-sort">Sort by:</label>
           <select id="product-sort" class="product-sort">
             <option value="">Default</option>
-            <option value="name">Name</option>
-            <option value="price">Price</option>
+            <option value="name-asc">Name A–Z</option>
+            <option value="name-desc">Name Z–A</option>
+            <option value="price-asc">Price Low to High</option>
+            <option value="price-desc">Price High to Low</option>
           </select>
         </div>
         <ul class="product-list"></ul>
