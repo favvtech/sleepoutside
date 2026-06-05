@@ -85,7 +85,10 @@ function renderCartContents() {
     return;
   }
   if (cartItems.length === 0) {
-    listEl.innerHTML = "";
+    listEl.innerHTML = `
+      <li class="cart-card cart-card--empty">
+        Your cart is empty. Browse products to add items to your cart.
+      </li>`;
   } else {
     listEl.innerHTML = cartItems
       .map((item, index) => cartItemTemplate(item, index))
@@ -114,7 +117,7 @@ function renderCartTotal(cartItems) {
 }
 
 function cartItemTemplate(item, index) {
-  const colorName = item.Colors[0]?.ColorName ?? "";
+  const colorName = item.Colors?.[0]?.ColorName ?? "";
   const image = item.Image || item.Images?.PrimaryMedium;
 
   return `<li class="cart-card divider">

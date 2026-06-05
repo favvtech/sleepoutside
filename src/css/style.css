@@ -904,6 +904,13 @@ button,
   color: white;
 }
 
+.cart-card--empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--dark-grey);
+  background: #fafafa;
+}
+
 .cart-footer {
   display: block;
   margin-top: 1.5rem;
